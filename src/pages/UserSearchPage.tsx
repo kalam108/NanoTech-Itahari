@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRBAC } from '../context/RBACContext';
 import { ProductGrid } from '../components/products/ProductGrid';
-import { Search, ArrowLeft, SlidersHorizontal, Sparkles, Tag, ShieldCheck } from 'lucide-react';
+import { Search, ArrowLeft, SlidersHorizontal, Sparkles, Tag, ShieldCheck, Shield, Crown } from 'lucide-react';
 
 export function UserSearchPage() {
   const { filters, setFilters, products, resetFilters } = useApp();
@@ -68,14 +68,22 @@ export function UserSearchPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs">
+            <div className="flex flex-wrap items-center gap-2 text-xs">
               <button
-                onClick={() => rbacNavigate('/admin')}
-                className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                title="Switch to Admin URL (/admin)"
+                onClick={() => rbacNavigate('/admin/search' + (filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : ''))}
+                className="px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                title="Switch to Admin Search URL (/admin/search)"
               >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Switch to Admin Portal (/admin)
+                <Shield className="w-3.5 h-3.5 text-purple-400" />
+                Admin Search (/admin/search)
+              </button>
+              <button
+                onClick={() => rbacNavigate('/superadmin/search' + (filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : ''))}
+                className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                title="Switch to Superadmin Search URL (/superadmin/search)"
+              >
+                <Crown className="w-3.5 h-3.5 text-amber-400" />
+                Superadmin Search (/superadmin/search)
               </button>
             </div>
           </div>

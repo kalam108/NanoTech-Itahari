@@ -21,6 +21,7 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
 
   const navItems = [
     { label: 'Master Dashboard', path: '/superadmin/dashboard', icon: LayoutDashboard },
+    { label: 'Master Search', path: '/superadmin/search', icon: Search },
     { label: 'Manage Administrators', path: '/superadmin/admins', icon: UserCheck },
     { label: 'Customer Accounts', path: '/superadmin/customers', icon: Users },
     { label: 'Global Products Control', path: '/superadmin/products', icon: Cpu },

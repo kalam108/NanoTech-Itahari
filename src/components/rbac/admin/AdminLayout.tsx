@@ -19,6 +19,7 @@ export const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const navItems = [
     { label: 'Overview Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
+    { label: 'Global Search', path: '/admin/search', icon: Search },
     { label: 'Products Management', path: '/admin/products', icon: Cpu, permission: 'products.view' as const },
     { label: 'Orders Queue', path: '/admin/orders', icon: Package, permission: 'orders.view' as const },
     { label: 'Customer Accounts', path: '/admin/customers', icon: Users, permission: 'customers.view' as const },
