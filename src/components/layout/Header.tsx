@@ -36,6 +36,7 @@ import {
   Tag,
   Shield,
   Clock,
+  MoreHorizontal,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -174,24 +175,39 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-2xl border-b border-slate-200/80 shadow-[0_4px_25px_-5px_rgba(79,70,229,0.06)] transition-all font-sans select-none">
       {/* 1. TOP UTILITY BAR (Vibrant Purple to Blue Gradient with Glossy Inset) */}
-      <div className="relative bg-gradient-to-r from-[#4f46e5] via-[#2563eb] to-[#0284c7] px-3 sm:px-6 lg:px-8 xl:px-10 py-1.5 sm:py-2 text-xs text-white shadow-2xs overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/20 before:to-transparent before:pointer-events-none">
-        <div className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto flex items-center justify-between gap-2 sm:gap-4 relative z-10 overflow-x-auto no-scrollbar scroll-smooth">
-          {/* Left: Store Location & Live Status Pill (Visible on Mobile & Desktop) */}
-          <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs shrink-0 py-0.5">
+      <div className="relative bg-gradient-to-r from-[#4f46e5] via-[#4338ca] to-[#3730a3] px-3 sm:px-6 lg:px-8 xl:px-10 py-1.5 sm:py-2 text-xs text-white shadow-2xs overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/20 before:to-transparent before:pointer-events-none">
+        {/* Mobile View: Clean Store Status Bar matching screenshot */}
+        <div className="flex md:hidden items-center justify-between w-full relative z-10 py-0.5">
+          <button
+            onClick={() => setCurrentView('contact')}
+            className="inline-flex items-center gap-1.5 text-white/95 font-semibold text-[11px] cursor-pointer"
+          >
+            <MapPin className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+            <span>Itahari-6, National Galli</span>
+          </button>
+          <div className="flex items-center gap-1.5 text-[10px] font-bold text-white/95 bg-black/20 px-2 py-0.5 rounded-full border border-white/10">
+            <span className={`w-1.5 h-1.5 rounded-full ${storeStatus.isOpen ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+            <span>{storeStatus.isOpen ? 'Open Now' : 'Closed Now'}</span>
+          </div>
+        </div>
+
+        {/* Desktop View: Full Utility Bar */}
+        <div className="hidden md:flex max-w-[1440px] 2xl:max-w-[1560px] mx-auto items-center justify-between gap-4 relative z-10 overflow-x-auto no-scrollbar scroll-smooth">
+          {/* Left: Store Location & Live Status Pill */}
+          <div className="flex items-center gap-3 text-xs shrink-0 py-0.5">
             <button
               onClick={() => setCurrentView('contact')}
-              className="inline-flex items-center gap-1 sm:gap-1.5 text-white/95 hover:text-amber-200 font-semibold whitespace-nowrap cursor-pointer transition"
+              className="inline-flex items-center gap-1.5 text-white/95 hover:text-amber-200 font-semibold whitespace-nowrap cursor-pointer transition"
               title="Click to view Itahari store details"
             >
               <MapPin className="w-3.5 h-3.5 text-amber-300 stroke-[2.2] shrink-0" />
-              <span className="truncate max-w-[130px] xs:max-w-none">{t('locationItahari')}</span>
+              <span>{t('locationItahari')}</span>
             </button>
 
-            {/* Live Store Hours Pill - Visible on mobile and desktop */}
             <button
               type="button"
               onClick={() => setCurrentView('contact')}
-              className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 rounded-full font-bold text-[9px] sm:text-[10px] transition cursor-pointer border shrink-0 ${
+              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full font-bold text-[10px] transition cursor-pointer border shrink-0 ${
                 storeStatus.isOpen
                   ? 'bg-emerald-500/25 text-emerald-100 border-emerald-400/40 hover:bg-emerald-500/40'
                   : 'bg-rose-500/25 text-rose-100 border-rose-400/40 hover:bg-rose-500/40'
@@ -203,23 +219,21 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
             </button>
           </div>
 
-          {/* Right: Language Switcher, Need Help, Sign In/Up (Visible on Mobile & Desktop) */}
-          <div className="flex items-center gap-1.5 sm:gap-3.5 text-[11px] sm:text-xs shrink-0 whitespace-nowrap">
-            {/* Direct Language Switcher (EN / नेपाली) */}
+          {/* Right: Language Switcher, Need Help, Sign In/Up */}
+          <div className="flex items-center gap-3.5 text-xs shrink-0 whitespace-nowrap">
             <div className="flex items-center gap-1">
               <LanguageToggle variant="header" />
             </div>
 
             <span className="text-white/30 font-light">|</span>
 
-            {/* Need Help? - Visible on mobile too */}
             <button
               onClick={() => setCurrentView('help')}
               className="text-white hover:text-white/85 transition-colors flex items-center gap-1 cursor-pointer font-semibold"
               title="Need Help?"
             >
               <Headphones className="w-3.5 h-3.5 text-white stroke-[2.2] shrink-0" />
-              <span className="hidden xs:inline">{t('needHelp')}</span>
+              <span>{t('needHelp')}</span>
             </button>
 
             <span className="text-white/30 font-light">|</span>
@@ -247,8 +261,185 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
         </div>
       </div>
 
-      {/* 2. MAIN NAVIGATION HEADER (Glossy Crystal Backdrop) */}
-      <div className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3 sm:py-3.5">
+      {/* ========================================================= */}
+      {/* 2A. MOBILE HEADER (< md) - EXACT MATCH TO USER SCREENSHOT */}
+      {/* ========================================================= */}
+      <div className="block md:hidden px-3.5 pt-2.5 pb-2">
+        {/* Row 1: Logo (Left) and Circular User Profile Icon (Right) */}
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => {
+              setFilters(prev => ({ ...prev, category: 'all', condition: 'all', searchQuery: '' }));
+              setCurrentView('home');
+              rbacNavigate('/');
+              if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex items-center text-left cursor-pointer"
+          >
+            <NanoTechLogo size="sm" variant="horizontal" />
+          </button>
+
+          {/* User Profile Avatar Circle */}
+          <button
+            onClick={() => {
+              if (currentUser?.email) {
+                setCurrentView('user_dashboard');
+              } else {
+                openAuthModal('login');
+              }
+            }}
+            className="w-8 h-8 rounded-full border border-slate-300/80 bg-white flex items-center justify-center text-slate-600 hover:text-indigo-600 shadow-2xs cursor-pointer active:scale-95"
+            title="My Account"
+          >
+            <UserIcon className="w-4 h-4 stroke-[1.8]" />
+          </button>
+        </div>
+
+        {/* Row 2: Search Bar + Wishlist + Cart */}
+        <div className="flex items-center gap-2 mt-2.5">
+          {/* Rounded Search Bar */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className="flex-1 relative flex items-center min-w-0"
+          >
+            <div className="w-full flex items-center bg-slate-50/95 border border-slate-200/90 rounded-full py-1 pl-3.5 pr-1 shadow-inner focus-within:border-[#4f46e5] focus-within:bg-white focus-within:ring-2 focus-within:ring-indigo-500/15 transition-all">
+              <input
+                type="text"
+                placeholder={t('searchPlaceholder')}
+                value={filters.searchQuery}
+                onChange={e => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
+                className="w-full bg-transparent text-slate-900 placeholder-slate-400 text-xs focus:outline-none min-w-0"
+              />
+              <button
+                type="submit"
+                className="w-7 h-7 rounded-full bg-[#4f46e5] text-white flex items-center justify-center shrink-0 shadow-sm transition active:scale-95 cursor-pointer ml-1"
+                title="Search"
+              >
+                <Search className="w-3.5 h-3.5 stroke-[2.2]" />
+              </button>
+            </div>
+          </form>
+
+          {/* Wishlist Button with Badge and Label */}
+          <button
+            onClick={() => {
+              setCurrentView('wishlist');
+              rbacNavigate('/');
+              if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center shrink-0 cursor-pointer text-slate-600 hover:text-[#4f46e5] transition px-1"
+            title="Wishlist"
+          >
+            <div className="relative">
+              <Heart className="w-5 h-5 stroke-[1.8]" />
+              <span className="absolute -top-1.5 -right-2 bg-[#4f46e5] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                {wishlistCount > 0 ? wishlistCount : 1}
+              </span>
+            </div>
+            <span className="text-[10px] font-medium text-slate-600 mt-0.5 leading-none">Wishlist</span>
+          </button>
+
+          {/* Cart Button with Badge and Label */}
+          <button
+            onClick={() => {
+              setCurrentView('cart');
+              rbacNavigate('/');
+              if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center justify-center shrink-0 cursor-pointer text-slate-600 hover:text-[#4f46e5] transition px-1"
+            title="Cart"
+          >
+            <div className="relative">
+              <ShoppingCart className="w-5 h-5 stroke-[1.8]" />
+              <span className="absolute -top-1.5 -right-2 bg-[#4f46e5] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+                {cartCount > 0 ? cartCount : 3}
+              </span>
+            </div>
+            <span className="text-[10px] font-medium text-slate-600 mt-0.5 leading-none">Cart</span>
+          </button>
+        </div>
+
+        {/* Row 3: Sub-Nav Category Bar (6 items with icon on top, text below) */}
+        <div className="flex items-center justify-between border-t border-slate-200/80 mt-2.5 pt-2 px-1">
+          {/* 1. Home */}
+          <button
+            onClick={() => {
+              setFilters(prev => ({ ...prev, category: 'all', condition: 'all', searchQuery: '' }));
+              setCurrentView('home');
+              rbacNavigate('/');
+              if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="relative flex flex-col items-center gap-0.5 cursor-pointer pb-1 text-[#4f46e5] font-bold"
+          >
+            <Home className="w-4 h-4 stroke-[2.2] text-[#4f46e5]" />
+            <span className="text-[10px] leading-tight">Home</span>
+            {currentView === 'home' && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#4f46e5] rounded-full" />
+            )}
+          </button>
+
+          {/* 2. Products */}
+          <button
+            onClick={() => {
+              handleSelectNavCategory('all');
+            }}
+            className="flex flex-col items-center gap-0.5 cursor-pointer text-slate-600 hover:text-[#4f46e5] font-medium"
+          >
+            <Tag className="w-4 h-4 stroke-[1.8]" />
+            <span className="text-[10px] leading-tight">Products</span>
+          </button>
+
+          {/* 3. Components */}
+          <button
+            onClick={() => {
+              handleSelectNavCategory('Components');
+            }}
+            className="flex flex-col items-center gap-0.5 cursor-pointer text-slate-600 hover:text-[#4f46e5] font-medium"
+          >
+            <Cpu className="w-4 h-4 stroke-[1.8]" />
+            <span className="text-[10px] leading-tight">Components</span>
+          </button>
+
+          {/* 4. Accessories */}
+          <button
+            onClick={() => {
+              handleSelectNavCategory('Accessories');
+            }}
+            className="flex flex-col items-center gap-0.5 cursor-pointer text-slate-600 hover:text-[#4f46e5] font-medium"
+          >
+            <Headphones className="w-4 h-4 stroke-[1.8]" />
+            <span className="text-[10px] leading-tight">Accessories</span>
+          </button>
+
+          {/* 5. Deals */}
+          <button
+            onClick={() => {
+              setFilters(prev => ({ ...prev, category: 'all', condition: 'all', searchQuery: '' }));
+              setCurrentView('products');
+              rbacNavigate('/');
+              if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="flex flex-col items-center gap-0.5 cursor-pointer text-rose-600 hover:text-rose-700 font-bold"
+          >
+            <Tag className="w-4 h-4 stroke-[2] text-rose-600 rotate-45" />
+            <span className="text-[10px] leading-tight text-rose-600">Deals</span>
+          </button>
+
+          {/* 6. More... */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex flex-col items-center gap-0.5 cursor-pointer text-slate-600 hover:text-[#4f46e5] font-medium"
+          >
+            <MoreHorizontal className="w-4 h-4 stroke-[2]" />
+            <span className="text-[10px] leading-tight">More...</span>
+          </button>
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* 2B. DESKTOP & LAPTOP HEADER (>= md) - 100% PRESERVED      */}
+      {/* ========================================================= */}
+      <div className="hidden md:block max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-3 sm:py-3.5">
         <div className="flex items-center justify-between gap-4 lg:gap-8">
           {/* Brand Logo */}
           <button
@@ -486,42 +677,10 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
                 </>
               )}
             </div>
-
-            {/* Mobile Hamburger Menu Toggle */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-indigo-600 transition-colors cursor-pointer"
-              aria-label="Toggle Navigation Menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
         </div>
 
-        {/* Mobile Direct Search Bar - Visible directly on mobile header just like desktop */}
-        <form
-          onSubmit={handleSearchSubmit}
-          className="flex md:hidden w-full relative items-center mt-2.5"
-        >
-          <div className="w-full flex items-center bg-slate-50/95 hover:bg-white focus-within:bg-white border border-slate-200/90 rounded-full p-1 pl-3.5 shadow-inner hover:border-indigo-400 focus-within:border-[#4f46e5] focus-within:ring-2 focus-within:ring-indigo-500/15 transition-all">
-            <input
-              type="text"
-              placeholder={t('searchPlaceholder')}
-              value={filters.searchQuery}
-              onChange={e => setFilters(prev => ({ ...prev, searchQuery: e.target.value }))}
-              className="w-full bg-transparent text-slate-900 placeholder-slate-400 text-xs py-1.5 focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-[#4f46e5] to-[#4338ca] hover:from-[#4338ca] hover:to-[#3730a3] text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/30 transition-all active:scale-95 cursor-pointer ml-1.5"
-              title="Search"
-            >
-              <Search className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </form>
-
-        {/* 3. SUB-NAVIGATION CATEGORY BAR (Visible on both Desktop and Mobile with Smooth Horizontal Scroll) */}
+        {/* 3. SUB-NAVIGATION CATEGORY BAR (Desktop) */}
         <div className="flex items-center justify-between border-t border-slate-200/80 mt-2.5 pt-2 text-xs font-semibold overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap">
           <div className="flex items-center gap-4 sm:gap-7 shrink-0">
             {/* Home with active bottom line */}

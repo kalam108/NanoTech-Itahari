@@ -54,9 +54,57 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="group relative glossy-card glossy-card-hover glossy-glass-shine rounded-2xl flex flex-col overflow-hidden">
-      {/* Product Image Stage */}
-      <div className="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden cursor-pointer" onClick={handleQuickView}>
+    <>
+      {/* 1. MOBILE HORIZONTAL PRODUCT CARD (< md) - Exact Match to Mobile Screenshot */}
+      <div className="md:hidden bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-3 flex items-center gap-3 transition-all hover:border-indigo-300">
+        {/* Left: Square box with dark rounded border matching screenshot */}
+        <div
+          onClick={handleQuickView}
+          className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl border-2 border-slate-900 bg-white p-1.5 flex items-center justify-center shrink-0 cursor-pointer overflow-hidden relative group"
+        >
+          <img
+            src={product.images?.[0] || 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800'}
+            alt={product.title}
+            className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src =
+                'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=800';
+            }}
+          />
+        </div>
+
+        {/* Right: Info + Price + Add to Cart Button */}
+        <div className="flex-1 flex flex-col justify-between self-stretch min-w-0 py-0.5">
+          <div>
+            <h3
+              onClick={handleQuickView}
+              className="text-sm font-bold text-slate-900 line-clamp-2 leading-snug cursor-pointer hover:text-[#4f46e5] transition-colors"
+              title={product.title}
+            >
+              {product.title}
+            </h3>
+            <div className="text-base sm:text-lg font-black text-slate-900 tracking-tight mt-1">
+              {formatPricePrimary(product.price)}
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-2">
+            <button
+              onClick={() => addToCart(product, 1)}
+              className="px-3.5 py-1.5 rounded-lg border border-slate-300 text-xs font-semibold text-slate-800 hover:bg-slate-50 active:scale-95 transition-all cursor-pointer shadow-2xs"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. DESKTOP & LAPTOP VERTICAL GLOSSY CARD (>= md) - 100% Preserved */}
+      <div className="hidden md:flex group relative glossy-card glossy-card-hover glossy-glass-shine rounded-2xl flex-col overflow-hidden">
+        {/* Product Image Stage */}
+        <div className="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden cursor-pointer" onClick={handleQuickView}>
         <img
           src={product.images?.[0] || 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800'}
           alt={product.title}
@@ -188,5 +236,6 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
     </div>
-  );
+  </>
+);
 }

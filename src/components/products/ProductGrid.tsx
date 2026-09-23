@@ -109,7 +109,7 @@ export function ProductGrid() {
   });
 
   return (
-    <div className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-8">
+    <div className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10 pt-4 pb-28 md:py-8">
       {/* Title & Stats */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
@@ -134,7 +134,7 @@ export function ProductGrid() {
         {/* Products Grid */}
         <div className="lg:col-span-3">
           {sortedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 md:gap-6">
               {sortedProducts.map(product => (
                 <div key={product.id}>
                   <ProductCard product={product} />

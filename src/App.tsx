@@ -13,11 +13,13 @@ import { AIProductAdvisor } from './components/products/AIProductAdvisor';
 import { AddToCartPaymentModal } from './components/cart/AddToCartPaymentModal';
 import { CheckoutModal } from './components/checkout/CheckoutModal';
 import { ServerDiagnosticsModal } from './components/common/ServerConnectivityStatus';
+import { MobileBottomNav } from './components/layout/MobileBottomNav';
 
 // Pages & Views
 import { HomePage } from './pages/HomePage';
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
+import { UserSearchPage } from './pages/UserSearchPage';
 import { CartPage } from './components/cart/CartPage';
 import { UserOrdersPage } from './components/orders/UserOrdersPage';
 import { ChatView } from './components/chat/ChatView';
@@ -167,6 +169,7 @@ function MainLayout() {
         initialBank={checkoutInitialBank}
       />
       <ServerDiagnosticsModal />
+      <MobileBottomNav />
     </div>
   );
 }

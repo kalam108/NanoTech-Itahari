@@ -13,7 +13,7 @@ export function HardwareAIFloatingButton({ isOpen, onClick }: HardwareAIFloating
   return (
     <div
       id="hardware-ai-floating-container"
-      className="fixed bottom-6 right-6 z-40 flex items-center gap-3 select-none"
+      className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-40 flex items-center gap-3 select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

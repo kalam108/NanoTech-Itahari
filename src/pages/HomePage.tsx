@@ -19,12 +19,12 @@ export function HomePage({ onOpenAiAdvisor: _onOpenAiAdvisor }: HomePageProps) {
   const trendingProducts = products.slice(4, 8);
 
   return (
-    <div className="space-y-10 pb-16">
+    <div className="space-y-8 sm:space-y-10 pb-28 md:pb-16">
       {/* 1. HERO CAROUSEL BANNER SECTION ("Build Your Dream PC with Nanotech") */}
       <HeroBanner />
 
       {/* 2. FEATURED PRODUCTS SHOWCASE */}
-      <section className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 space-y-6">
+      <section className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10 space-y-4 sm:space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
@@ -48,7 +48,7 @@ export function HomePage({ onOpenAiAdvisor: _onOpenAiAdvisor }: HomePageProps) {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {featuredProducts.map(product => (
             <div key={product.id}>
               <ProductCard product={product} />
@@ -58,7 +58,7 @@ export function HomePage({ onOpenAiAdvisor: _onOpenAiAdvisor }: HomePageProps) {
       </section>
 
       {/* 3. TRENDING HARDWARE SHOWCASE */}
-      <section className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 space-y-6">
+      <section className="max-w-[1440px] 2xl:max-w-[1560px] mx-auto px-3.5 sm:px-6 lg:px-8 xl:px-10 space-y-4 sm:space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export function HomePage({ onOpenAiAdvisor: _onOpenAiAdvisor }: HomePageProps) {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           {trendingProducts.map(product => (
             <div key={product.id}>
               <ProductCard product={product} />
