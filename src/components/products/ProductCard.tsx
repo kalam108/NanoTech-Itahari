@@ -48,6 +48,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleQuickView = () => {
     setSelectedProductId(product.id);
     setCurrentView('product_detail');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (

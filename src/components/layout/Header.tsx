@@ -110,10 +110,14 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
   };
 
   const handleSelectNavCategory = (catName: string, condition: 'all' | 'Refurbished' | 'Used' = 'all') => {
-    setFilters(prev => ({ ...prev, category: catName, condition }));
+    setFilters(prev => ({ ...prev, category: catName, condition, searchQuery: '' }));
     setProductsDropdownOpen(false);
     setComponentsDropdownOpen(false);
     setCurrentView('products');
+    rbacNavigate('/');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handleLogout = () => {
@@ -251,6 +255,8 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
             onClick={() => {
               setFilters(prev => ({ ...prev, category: 'all', condition: 'all', searchQuery: '' }));
               setCurrentView('home');
+              rbacNavigate('/');
+              if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="flex items-center group focus:outline-none shrink-0 text-left cursor-pointer"
           >
@@ -287,7 +293,11 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
           <div className="flex items-center gap-2.5 sm:gap-6">
             {/* Wishlist */}
             <button
-              onClick={() => setCurrentView('wishlist')}
+              onClick={() => {
+                setCurrentView('wishlist');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="flex flex-col items-center group relative text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer"
               title="Wishlist"
             >
@@ -304,7 +314,11 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
 
             {/* Compare */}
             <button
-              onClick={() => setCurrentView('compare')}
+              onClick={() => {
+                setCurrentView('compare');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="flex flex-col items-center group relative text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer"
               title="Compare Products"
             >
@@ -321,7 +335,11 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
 
             {/* Cart */}
             <button
-              onClick={() => setCurrentView('cart')}
+              onClick={() => {
+                setCurrentView('cart');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="flex flex-col items-center group relative text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer"
               title="Shopping Cart"
             >
@@ -511,6 +529,8 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
               onClick={() => {
                 setFilters(prev => ({ ...prev, category: 'all', condition: 'all', searchQuery: '' }));
                 setCurrentView('home');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className={`relative flex items-center gap-1.5 pb-1.5 transition-colors cursor-pointer shrink-0 ${
                 currentView === 'home'
@@ -654,8 +674,10 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
             {/* Deals */}
             <button
               onClick={() => {
-                setFilters(prev => ({ ...prev, category: 'all', condition: 'all' }));
+                setFilters(prev => ({ ...prev, category: 'all', condition: 'all', searchQuery: '' }));
                 setCurrentView('products');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="flex items-center gap-1.5 text-rose-600 hover:text-rose-700 font-bold transition-colors cursor-pointer shrink-0"
             >
@@ -666,13 +688,21 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
 
           <div className="flex items-center gap-4 sm:gap-6 shrink-0 pl-4 sm:pl-6 border-l border-slate-200/60 md:border-l-0">
             <button
-              onClick={() => setCurrentView('orders')}
+              onClick={() => {
+                setCurrentView('orders');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="text-slate-600 hover:text-[#4f46e5] transition-colors cursor-pointer shrink-0"
             >
               {t('myOrders')}
             </button>
             <button
-              onClick={() => setCurrentView('about')}
+              onClick={() => {
+                setCurrentView('about');
+                rbacNavigate('/');
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               className="text-slate-600 hover:text-[#4f46e5] transition-colors cursor-pointer shrink-0"
             >
               {t('about')}

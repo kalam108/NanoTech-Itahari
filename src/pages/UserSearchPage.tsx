@@ -2,10 +2,32 @@ import React, { useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useRBAC } from '../context/RBACContext';
 import { ProductGrid } from '../components/products/ProductGrid';
+import { ProductDetailPage } from './ProductDetailPage';
+import { AddToCartPaymentModal } from '../components/cart/AddToCartPaymentModal';
+import { CheckoutModal } from '../components/checkout/CheckoutModal';
+import { ToastContainer } from '../components/layout/ToastContainer';
 import { Search, ArrowLeft, SlidersHorizontal, Sparkles, Tag, ShieldCheck, Shield, Crown } from 'lucide-react';
 
 export function UserSearchPage() {
-  const { filters, setFilters, products, resetFilters } = useApp();
+  const {
+    filters,
+    setFilters,
+    products,
+    resetFilters,
+    currentView,
+    setCurrentView,
+    selectedProductId,
+    setSelectedProductId,
+    isAddToCartModalOpen,
+    setIsAddToCartModalOpen,
+    lastAddedProduct,
+    lastAddedQuantity,
+    openCheckoutModalWithPayment,
+    isCheckoutModalOpen,
+    setIsCheckoutModalOpen,
+    checkoutInitialMethod,
+    checkoutInitialBank,
+  } = useApp();
   const { navigate: rbacNavigate } = useRBAC();
 
   // Read search query parameter from URL on mount and popstate
@@ -37,15 +59,68 @@ export function UserSearchPage() {
     }
   };
 
+  const handleBackToStorefront = () => {
+    setCurrentView('home');
+    rbacNavigate('/');
+  };
+
+  // If a user clicks on a product to view details while on /search, display the ProductDetailPage directly
+  if (currentView === 'product_detail' && selectedProductId) {
+    return (
+      <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+        <ToastContainer />
+        <div className="bg-slate-900 text-white py-4 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <button
+              onClick={() => {
+                setCurrentView('search');
+                setSelectedProductId(null);
+              }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all cursor-pointer"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Search Results</span>
+            </button>
+            <button
+              onClick={handleBackToStorefront}
+              className="text-xs text-indigo-300 hover:text-white font-medium transition-colors cursor-pointer"
+            >
+              Go to Storefront Home
+            </button>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+          <ProductDetailPage />
+        </div>
+        <AddToCartPaymentModal
+          isOpen={isAddToCartModalOpen}
+          onClose={() => setIsAddToCartModalOpen(false)}
+          product={lastAddedProduct}
+          quantity={lastAddedQuantity}
+          onProceedToCheckout={(method, bank) => {
+            openCheckoutModalWithPayment(method, bank);
+          }}
+        />
+        <CheckoutModal
+          isOpen={isCheckoutModalOpen}
+          onClose={() => setIsCheckoutModalOpen(false)}
+          initialMethod={checkoutInitialMethod}
+          initialBank={checkoutInitialBank}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+      <ToastContainer />
       {/* Search Header Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border-b border-indigo-900/40 py-8 px-4 sm:px-6 lg:px-8 shadow-sm">
         <div className="max-w-7xl mx-auto space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => rbacNavigate('/')}
+                onClick={handleBackToStorefront}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-semibold"
                 title="Back to Home Storefront"
               >
@@ -58,7 +133,7 @@ export function UserSearchPage() {
                     Dedicated URL: /search
                   </span>
                   <span className="text-xs text-slate-400 font-mono hidden sm:inline">
-                    {window.location.origin}/search
+                    {typeof window !== 'undefined' ? window.location.origin : ''}/search
                   </span>
                 </div>
                 <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-1 flex items-center gap-2">
@@ -131,6 +206,23 @@ export function UserSearchPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <ProductGrid />
       </div>
+
+      {/* Modals for Cart & Checkout */}
+      <AddToCartPaymentModal
+        isOpen={isAddToCartModalOpen}
+        onClose={() => setIsAddToCartModalOpen(false)}
+        product={lastAddedProduct}
+        quantity={lastAddedQuantity}
+        onProceedToCheckout={(method, bank) => {
+          openCheckoutModalWithPayment(method, bank);
+        }}
+      />
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        initialMethod={checkoutInitialMethod}
+        initialBank={checkoutInitialBank}
+      />
     </div>
   );
 }

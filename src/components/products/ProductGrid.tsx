@@ -52,13 +52,13 @@ export function ProductGrid() {
       const isPsuMatch = (fCat.includes('power suppl') || fCat.includes('psu')) && 
         (pCat.includes('power suppl') || pCat.includes('psu') || pSub.includes('psu') || pSub.includes('power'));
       const isCoolerMatch = (fCat.includes('cooler') || fCat.includes('cooling')) && 
-        (pCat.includes('cooler') || pCat.includes('cooling') || pSub.includes('cpu_cooler') || pTitle.includes('cooler') || pTitle.includes('liquid'));
+        (pCat.includes('cooler') || pCat.includes('cooling') || pSub.includes('cpu_cooler') || pSub.includes('cooling') || pSub.includes('cooler') || pTitle.includes('cooler') || pTitle.includes('liquid') || pTitle.includes('fan'));
       const isCaseMatch = (fCat.includes('case') || fCat.includes('cabinet')) && 
-        (pCat.includes('case') || pCat.includes('cabinet') || pSub.includes('pc_case') || pTitle.includes('case') || pTitle.includes('chassis'));
+        (pCat.includes('case') || pCat.includes('cabinet') || pSub.includes('pc_case') || pSub.includes('case') || pTitle.includes('case') || pTitle.includes('chassis'));
       
-      const isComponentsMatch = (fCat.includes('component') || fCat.includes('components')) && 
+      const isComponentsMatch = (fCat.includes('component') || fCat === 'components') && 
         (isGpuMatch || isCpuMatch || isMoboMatch || isRamMatch || isStorageMatch || isPsuMatch || isCoolerMatch || isCaseMatch ||
-         pCat.includes('gpu') || pCat.includes('cpu') || pCat.includes('ram') || pCat.includes('storage') || pCat.includes('ssd') || pCat.includes('motherboard') || pCat.includes('processor') || pCat.includes('graphics') || pCat.includes('power supply') || pCat.includes('psu') || pSub.includes('psu') || pSub.includes('cpu_cooler') || pSub.includes('pc_case') || pCat.includes('case') || pCat.includes('cooler'));
+         pCat.includes('gpu') || pCat.includes('cpu') || pCat.includes('ram') || pCat.includes('storage') || pCat.includes('ssd') || pCat.includes('motherboard') || pCat.includes('processor') || pCat.includes('graphics') || pCat.includes('power supply') || pCat.includes('psu') || pSub.includes('psu') || pSub.includes('cpu_cooler') || pSub.includes('cooling') || pSub.includes('pc_case') || pCat.includes('case') || pCat.includes('cooler'));
 
       if (!isDirectMatch && !isDesktopMatch && !isLaptopMatch && !isKeyboardMatch && !isMouseMatch && !isAccessoriesMatch && !isComponentsMatch && !isGpuMatch && !isCpuMatch && !isMoboMatch && !isRamMatch && !isStorageMatch && !isPsuMatch && !isCoolerMatch && !isCaseMatch) {
         return false;
