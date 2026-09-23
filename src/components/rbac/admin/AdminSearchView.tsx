@@ -156,12 +156,12 @@ export function AdminSearchView() {
             </button>
 
             <button
-              onClick={() => rbacNavigate('/superadmin/search' + (query ? `?q=${encodeURIComponent(query)}` : ''))}
+              onClick={() => rbacNavigate('/kalam-infos/search' + (query ? `?q=${encodeURIComponent(query)}` : ''))}
               className="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
               title="Switch to Superadmin Search URL on same domain"
             >
               <Crown className="w-3.5 h-3.5 text-amber-400" />
-              Superadmin Search (/superadmin/search)
+              Superadmin Search (/kalam-infos/search)
             </button>
           </div>
         </div>

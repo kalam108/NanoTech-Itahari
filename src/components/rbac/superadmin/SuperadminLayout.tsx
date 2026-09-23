@@ -19,15 +19,18 @@ import {
 export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentPath, navigate, currentUser, logout } = useRBAC();
 
+  const isLegacySuper = currentPath.startsWith('/superadmin') && !currentPath.startsWith('/kalam-infos');
+  const baseSuper = isLegacySuper ? '/superadmin' : '/kalam-infos';
+
   const navItems = [
-    { label: 'Master Dashboard', path: '/superadmin/dashboard', icon: LayoutDashboard },
-    { label: 'Master Search', path: '/superadmin/search', icon: Search },
-    { label: 'Manage Administrators', path: '/superadmin/admins', icon: UserCheck },
-    { label: 'Customer Accounts', path: '/superadmin/customers', icon: Users },
-    { label: 'Global Products Control', path: '/superadmin/products', icon: Cpu },
-    { label: 'Orders & Financial Audit', path: '/superadmin/orders', icon: PackageCheck },
-    { label: 'RBAC Permissions Matrix', path: '/superadmin/permissions', icon: KeyRound },
-    { label: 'System Settings & Logs', path: '/superadmin/settings', icon: Sliders },
+    { label: 'Master Dashboard', path: `${baseSuper}/dashboard`, icon: LayoutDashboard },
+    { label: 'Create / Remove Admin', path: `${baseSuper}/admins`, icon: UserCheck },
+    { label: 'Change Admin Permissions', path: `${baseSuper}/permissions`, icon: KeyRound },
+    { label: 'Manage Users (Customers)', path: `${baseSuper}/customers`, icon: Users },
+    { label: 'Manage Products', path: `${baseSuper}/products`, icon: Cpu },
+    { label: 'Manage Orders & Audit', path: `${baseSuper}/orders`, icon: PackageCheck },
+    { label: 'Website Settings & Logs', path: `${baseSuper}/settings`, icon: Sliders },
+    { label: 'Master Search', path: `${baseSuper}/search`, icon: Search },
   ];
 
   return (
@@ -42,7 +45,7 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
 
         {/* Brand Banner */}
         <div className="p-5 border-b border-white/50 bg-white/30 backdrop-blur-md flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/superadmin/dashboard')}>
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate(`${baseSuper}/dashboard`)}>
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/30 flex items-center justify-center text-amber-600 shadow-sm shadow-amber-500/10 transition-transform group-hover:scale-105">
               <Lock className="w-5 h-5" />
             </div>
@@ -51,7 +54,7 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
                 <span>NanoTech</span>
                 <span className="text-[9px] bg-gradient-to-r from-amber-500 to-amber-600 text-white px-1.5 py-0.2 rounded-full font-black shadow-xs tracking-wider">ROOT</span>
               </div>
-              <div className="text-[11px] text-amber-700 font-bold tracking-tight">Kalam — Superadmin</div>
+              <div className="text-[11px] text-amber-700 font-bold tracking-tight">Kalam — /kalam-infos</div>
             </div>
           </div>
         </div>
@@ -126,19 +129,21 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
           </button>
 
           <button
-            onClick={() => navigate('/admin/dashboard')}
+            onClick={() => navigate('/adminpanel')}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-purple-800 hover:bg-purple-500/10 transition border border-purple-300/30 font-medium cursor-pointer"
+            title="Full Admin Control (/adminpanel)"
           >
             <ShieldAlert className="w-3.5 h-3.5 text-purple-600" />
-            <span>Switch to Admin View</span>
+            <span>Full Admin Control (/adminpanel)</span>
           </button>
 
           <button
             onClick={() => navigate('/')}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-600 hover:text-slate-900 hover:bg-white/70 transition border border-transparent cursor-pointer font-medium"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-700 hover:text-slate-900 hover:bg-white/70 transition border border-transparent cursor-pointer font-medium"
+            title="Full Store Control (/)"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-            <span>Customer Storefront</span>
+            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            <span>Full Store Control (Storefront /)</span>
           </button>
 
           <button
@@ -158,13 +163,15 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
           <div className="flex items-center gap-2 text-xs">
             <span className="text-amber-700 font-bold">Kalam — Superadmin</span>
             <span className="text-slate-300">/</span>
-            <span className="text-slate-700 font-semibold uppercase tracking-wider">{currentPath.replace('/superadmin/', '') || 'Dashboard'}</span>
+            <span className="text-slate-700 font-semibold uppercase tracking-wider">
+              {currentPath.replace('/kalam-infos/', '').replace('/superadmin/', '').replace('/kalam-infos', '') || 'Dashboard'}
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-[11px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-mono font-medium flex items-center gap-1.5 shadow-xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
-              Cluster Guard: Enforced
+            <span className="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full font-mono font-medium flex items-center gap-1.5 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+              Console: /kalam-infos
             </span>
           </div>
         </header>

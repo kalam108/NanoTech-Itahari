@@ -97,12 +97,12 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const path = currentPath;
 
-    // 1. SUPERADMIN ROUTES PROTECTION
-    if (path.startsWith('/superadmin')) {
-      if (path === '/superadmin/login') {
+    // 1. SUPERADMIN ROUTES PROTECTION (/kalam-infos and /superadmin)
+    if (path.startsWith('/superadmin') || path.startsWith('/kalam-infos')) {
+      if (path === '/superadmin/login' || path === '/kalam-infos/login') {
         // If already logged in as superadmin, go to dashboard
         if (currentUser && currentUser.role === 'superadmin') {
-          navigate('/superadmin/dashboard');
+          navigate('/kalam-infos');
         }
         return;
       }
@@ -110,7 +110,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // If not logged in, redirect to superadmin login
       if (!currentUser) {
         setSecurityNotice('Authentication required. Please log in with Superadmin credentials.');
-        navigate('/superadmin/login');
+        navigate(path.startsWith('/kalam-infos') ? '/kalam-infos/login' : '/superadmin/login');
         return;
       }
 
@@ -126,16 +126,16 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (currentUser.role === 'admin') {
         addAuditLog('FORBIDDEN_SUPERADMIN_ACCESS', path, `Admin ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Standard administrators cannot access the Superadmin console (Reserved for Kalam).');
-        navigate('/admin/dashboard');
+        navigate('/adminpanel');
         return;
       }
     }
 
-    // 2. ADMIN ROUTES PROTECTION
-    if (path.startsWith('/admin')) {
-      if (path === '/admin/login') {
+    // 2. ADMIN ROUTES PROTECTION (/adminpanel and /admin)
+    if (path.startsWith('/admin') || path.startsWith('/adminpanel')) {
+      if (path === '/admin/login' || path === '/adminpanel/login') {
         if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'superadmin')) {
-          navigate(currentUser.role === 'superadmin' ? '/superadmin/dashboard' : '/admin/dashboard');
+          navigate(currentUser.role === 'superadmin' ? '/kalam-infos' : '/adminpanel');
         }
         return;
       }
@@ -143,7 +143,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // If not logged in, redirect to admin login
       if (!currentUser) {
         setSecurityNotice('Authentication required. Please log into the Admin portal.');
-        navigate('/admin/login');
+        navigate(path.startsWith('/adminpanel') ? '/adminpanel/login' : '/admin/login');
         return;
       }
 
@@ -203,9 +203,9 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       // Route to respective dashboard
       if (data.user.role === 'superadmin') {
-        navigate('/superadmin/dashboard');
+        navigate('/kalam-infos');
       } else if (data.user.role === 'admin') {
-        navigate('/admin/dashboard');
+        navigate('/adminpanel');
       } else {
         navigate('/customer/dashboard');
       }
@@ -232,9 +232,9 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem('nanotech_user', JSON.stringify(seedUser));
 
       if (seedUser.role === 'superadmin') {
-        navigate('/superadmin/dashboard');
+        navigate('/kalam-infos');
       } else if (seedUser.role === 'admin') {
-        navigate('/admin/dashboard');
+        navigate('/adminpanel');
       } else {
         navigate('/customer/dashboard');
       }

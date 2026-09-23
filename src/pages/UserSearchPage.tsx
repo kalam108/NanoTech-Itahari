@@ -145,20 +145,20 @@ export function UserSearchPage() {
 
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <button
-                onClick={() => rbacNavigate('/admin/search' + (filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : ''))}
+                onClick={() => rbacNavigate('/adminpanel/search' + (filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : ''))}
                 className="px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                title="Switch to Admin Search URL (/admin/search)"
+                title="Switch to Admin Search URL (/adminpanel/search)"
               >
                 <Shield className="w-3.5 h-3.5 text-purple-400" />
-                Admin Search (/admin/search)
+                Admin Search (/adminpanel/search)
               </button>
               <button
-                onClick={() => rbacNavigate('/superadmin/search' + (filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : ''))}
+                onClick={() => rbacNavigate('/kalam-infos/search' + (filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : ''))}
                 className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                title="Switch to Superadmin Search URL (/superadmin/search)"
+                title="Switch to Superadmin Search URL (/kalam-infos/search)"
               >
                 <Crown className="w-3.5 h-3.5 text-amber-400" />
-                Superadmin Search (/superadmin/search)
+                Superadmin Search (/kalam-infos/search)
               </button>
             </div>
           </div>

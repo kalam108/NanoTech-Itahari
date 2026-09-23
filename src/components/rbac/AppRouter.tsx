@@ -34,6 +34,8 @@ import { SuperadminSearchView } from './superadmin/SuperadminSearchView';
 
 // Dedicated User Search Page
 import { UserSearchPage } from '../../pages/UserSearchPage';
+// Admin Store Content CMS Section
+import { ContentManagementSection as AdminContentView } from '../admin/sections/ContentManagementSection';
 
 export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentPath } = useRBAC();
@@ -48,9 +50,9 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
       return <UserSearchPage />;
     }
 
-    // 2. SUPERADMIN ROUTES
-    if (path.startsWith('/superadmin')) {
-      if (path === '/superadmin/login') {
+    // 2. SUPERADMIN ROUTES (/kalam-infos & /superadmin)
+    if (path.startsWith('/kalam-infos') || path.startsWith('/superadmin')) {
+      if (path === '/kalam-infos/login' || path === '/superadmin/login') {
         return <UnifiedLoginPage initialRole="superadmin" />;
       }
 
@@ -58,22 +60,31 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
       return (
         <SuperadminLayout>
           {(() => {
-            switch (path) {
-              case '/superadmin/search':
+            const sub = path.startsWith('/kalam-infos')
+              ? path.slice('/kalam-infos'.length)
+              : path.slice('/superadmin'.length);
+
+            switch (sub) {
+              case '/search':
                 return <SuperadminSearchView />;
-              case '/superadmin/dashboard':
+              case '':
+              case '/':
+              case '/dashboard':
                 return <SuperadminDashboardView />;
-              case '/superadmin/admins':
+              case '/admins':
                 return <SuperadminAdminsView />;
-              case '/superadmin/customers':
+              case '/customers':
+              case '/users':
                 return <SuperadminCustomersView />;
-              case '/superadmin/products':
+              case '/products':
                 return <SuperadminProductsView />;
-              case '/superadmin/orders':
+              case '/orders':
                 return <SuperadminOrdersView />;
-              case '/superadmin/permissions':
+              case '/permissions':
                 return <SuperadminPermissionsView />;
-              case '/superadmin/settings':
+              case '/settings':
+              case '/logs':
+              case '/security':
                 return <SuperadminSettingsView />;
               default:
                 return <SuperadminDashboardView />;
@@ -83,9 +94,9 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
       );
     }
 
-    // 3. ADMIN ROUTES
-    if (path.startsWith('/admin')) {
-      if (path === '/admin/login') {
+    // 3. ADMIN ROUTES (/adminpanel & /admin)
+    if (path.startsWith('/adminpanel') || path.startsWith('/admin')) {
+      if (path === '/adminpanel/login' || path === '/admin/login') {
         return <UnifiedLoginPage initialRole="admin" />;
       }
 
@@ -93,18 +104,27 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
       return (
         <AdminLayout>
           {(() => {
-            switch (path) {
-              case '/admin/search':
+            const sub = path.startsWith('/adminpanel')
+              ? path.slice('/adminpanel'.length)
+              : path.slice('/admin'.length);
+
+            switch (sub) {
+              case '/search':
                 return <AdminSearchView />;
-              case '/admin/dashboard':
+              case '':
+              case '/':
+              case '/dashboard':
                 return <AdminDashboardView />;
-              case '/admin/products':
+              case '/products':
                 return <AdminProductsView />;
-              case '/admin/orders':
+              case '/orders':
                 return <AdminOrdersView />;
-              case '/admin/customers':
+              case '/content':
+              case '/store-content':
+                return <AdminContentView />;
+              case '/customers':
                 return <AdminCustomersView />;
-              case '/admin/reports':
+              case '/reports':
                 return <AdminReportsView />;
               default:
                 return <AdminDashboardView />;

@@ -12,18 +12,23 @@ import {
   ExternalLink,
   Lock,
   ChevronRight,
+  Megaphone,
 } from 'lucide-react';
 
 export const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentPath, navigate, currentUser, logout, hasPermission } = useRBAC();
 
+  const isLegacyAdmin = currentPath.startsWith('/admin') && !currentPath.startsWith('/adminpanel');
+  const baseAdmin = isLegacyAdmin ? '/admin' : '/adminpanel';
+
   const navItems = [
-    { label: 'Overview Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
-    { label: 'Global Search', path: '/admin/search', icon: Search },
-    { label: 'Products Management', path: '/admin/products', icon: Cpu, permission: 'products.view' as const },
-    { label: 'Orders Queue', path: '/admin/orders', icon: Package, permission: 'orders.view' as const },
-    { label: 'Customer Accounts', path: '/admin/customers', icon: Users, permission: 'customers.view' as const },
-    { label: 'Sales & Inventory Reports', path: '/admin/reports', icon: BarChart3, permission: 'reports.view' as const },
+    { label: 'Overview Dashboard', path: `${baseAdmin}/dashboard`, icon: LayoutDashboard },
+    { label: 'Products Management', path: `${baseAdmin}/products`, icon: Cpu, permission: 'products.view' as const },
+    { label: 'Orders Queue', path: `${baseAdmin}/orders`, icon: Package, permission: 'orders.view' as const },
+    { label: 'Update Store Content', path: `${baseAdmin}/content`, icon: Megaphone, permission: 'settings.view' as const },
+    { label: 'Customer Accounts', path: `${baseAdmin}/customers`, icon: Users, permission: 'customers.view' as const },
+    { label: 'Sales & Inventory Reports', path: `${baseAdmin}/reports`, icon: BarChart3, permission: 'reports.view' as const },
+    { label: 'Global Search', path: `${baseAdmin}/search`, icon: Search },
   ];
 
   return (
@@ -32,13 +37,13 @@ export const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => 
       <aside className="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0">
         {/* Admin Brand */}
         <div className="p-5 border-b border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/admin/dashboard')}>
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`${baseAdmin}/dashboard`)}>
             <div className="w-9 h-9 rounded-xl bg-purple-600/20 border border-purple-500/40 flex items-center justify-center text-purple-400">
               <Shield className="w-5 h-5" />
             </div>
             <div>
               <div className="font-black text-sm text-white tracking-wide">NanoTech Admin</div>
-              <div className="text-[10px] text-purple-400 font-medium">Hardware Management</div>
+              <div className="text-[10px] text-purple-400 font-medium">/adminpanel Console</div>
             </div>
           </div>
         </div>
@@ -129,18 +134,20 @@ export const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => 
           <div className="flex items-center gap-2 text-xs">
             <span className="text-slate-500">Admin Portal</span>
             <span className="text-slate-600">/</span>
-            <span className="text-purple-400 font-semibold uppercase">{currentPath.replace('/admin/', '') || 'Dashboard'}</span>
+            <span className="text-purple-400 font-semibold uppercase">
+              {currentPath.replace('/adminpanel/', '').replace('/admin/', '').replace('/adminpanel', '') || 'Dashboard'}
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="text-[11px] text-slate-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">
-              Host: <code className="text-emerald-400">Single Domain RBAC</code>
+              URL: <code className="text-emerald-400 font-mono">/adminpanel</code>
             </span>
             <button
-              onClick={() => navigate('/admin/products')}
+              onClick={() => navigate(`${baseAdmin}/products`)}
               className="bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition"
             >
-              + Quick Action
+              + Add Hardware
             </button>
           </div>
         </header>

@@ -180,12 +180,12 @@ export function SuperadminSearchView() {
             </button>
 
             <button
-              onClick={() => rbacNavigate('/admin/search' + (query ? `?q=${encodeURIComponent(query)}` : ''))}
+              onClick={() => rbacNavigate('/adminpanel/search' + (query ? `?q=${encodeURIComponent(query)}` : ''))}
               className="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
               title="Switch to Admin Search URL on same domain"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
-              Admin Search (/admin/search)
+              Admin Search (/adminpanel/search)
             </button>
           </div>
         </div>
