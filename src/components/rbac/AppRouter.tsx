@@ -32,10 +32,9 @@ import { SuperadminPermissionsView } from './superadmin/SuperadminPermissionsVie
 import { SuperadminSettingsView } from './superadmin/SuperadminSettingsView';
 import { SuperadminSearchView } from './superadmin/SuperadminSearchView';
 
-// Dedicated User Search Page
-import { UserSearchPage } from '../../pages/UserSearchPage';
-// Admin Store Content CMS Section
-import { ContentManagementSection as AdminContentView } from '../admin/sections/ContentManagementSection';
+// Admin Enterprise Dashboard & Login Components
+import { AdminDashboard } from '../admin/AdminDashboard';
+import { AdminLogin } from '../admin/AdminLogin';
 
 export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentPath } = useRBAC();
@@ -94,44 +93,14 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
       );
     }
 
-    // 3. ADMIN ROUTES (/adminpanel & /admin)
+    // 3. ADMIN ROUTES (/adminpanel & /admin) -> Renders the full NanoTech Enterprise Admin Dashboard
     if (path.startsWith('/adminpanel') || path.startsWith('/admin')) {
       if (path === '/adminpanel/login' || path === '/admin/login') {
-        return <UnifiedLoginPage initialRole="admin" />;
+        return <AdminLogin />;
       }
 
-      // Role-protected Admin Portal
-      return (
-        <AdminLayout>
-          {(() => {
-            const sub = path.startsWith('/adminpanel')
-              ? path.slice('/adminpanel'.length)
-              : path.slice('/admin'.length);
-
-            switch (sub) {
-              case '/search':
-                return <AdminSearchView />;
-              case '':
-              case '/':
-              case '/dashboard':
-                return <AdminDashboardView />;
-              case '/products':
-                return <AdminProductsView />;
-              case '/orders':
-                return <AdminOrdersView />;
-              case '/content':
-              case '/store-content':
-                return <AdminContentView />;
-              case '/customers':
-                return <AdminCustomersView />;
-              case '/reports':
-                return <AdminReportsView />;
-              default:
-                return <AdminDashboardView />;
-            }
-          })()}
-        </AdminLayout>
-      );
+      // Role-protected NanoTech Enterprise Admin Dashboard
+      return <AdminDashboard />;
     }
 
     // 4. CUSTOMER ROUTES

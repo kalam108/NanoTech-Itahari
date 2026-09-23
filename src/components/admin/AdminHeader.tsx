@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAdmin, AdminSubView } from '../../context/AdminContext';
 import { useApp } from '../../context/AppContext';
+import { useRBAC } from '../../context/RBACContext';
 import { NanoTechLogo } from '../brand/NanoTechLogo';
 import {
   Shield,
@@ -38,6 +39,7 @@ export function AdminHeader() {
   } = useAdmin();
 
   const { setCurrentView } = useApp();
+  const { navigate: rbacNavigate } = useRBAC();
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -57,7 +59,10 @@ export function AdminHeader() {
       <div className="flex items-center gap-3 sm:gap-4">
         {/* Logo */}
         <div
-          onClick={() => setAdminSubView('dashboard')}
+          onClick={() => {
+            setAdminSubView('dashboard');
+            rbacNavigate('/adminpanel/dashboard');
+          }}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
           <NanoTechLogo size="sm" variant="emblem" glow={false} />
@@ -120,8 +125,11 @@ export function AdminHeader() {
 
         {/* Switch to Storefront */}
         <button
-          onClick={() => setCurrentView('home')}
-          className="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold shadow-xs hover:shadow-sm transition-all cursor-pointer"
+          onClick={() => {
+            setCurrentView('home');
+            rbacNavigate('/');
+          }}
+          className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold shadow-xs hover:shadow-sm transition-all cursor-pointer"
           title="Return to Customer Storefront"
         >
           <Store className="w-3.5 h-3.5 text-slate-600" />
@@ -155,10 +163,10 @@ export function AdminHeader() {
             />
             <div className="text-left hidden sm:block">
               <div className="text-xs font-bold text-slate-900 leading-tight">
-                {currentAdmin?.name || 'Admin User'}
+                {currentAdmin?.name || 'NENOTECH108'}
               </div>
               <div className="text-[10px] text-slate-500 font-medium leading-tight">
-                {currentAdmin?.role === 'super_admin' ? 'Super Admin' : 'Admin'}
+                Admin
               </div>
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-slate-600" />

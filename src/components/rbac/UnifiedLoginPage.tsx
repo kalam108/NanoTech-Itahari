@@ -18,8 +18,8 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
       setEmail('kalam@nanotech.com');
       setPassword('Kalam@123');
     } else if (role === 'admin') {
-      setEmail('admin@nanotech.com');
-      setPassword('Admin@123');
+      setEmail('nenotech108@gmail.com');
+      setPassword('Admin@12345');
     } else {
       setEmail('customer@nanotech.com');
       setPassword('Customer@123');
@@ -208,9 +208,9 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
               <div>
                 <div className="font-semibold text-purple-300 flex items-center gap-1.5">
                   <Shield className="w-3 h-3 text-purple-400" />
-                  Ramesh Admin (Staff)
+                  NENOTECH108 (Admin Dashboard)
                 </div>
-                <div className="text-slate-400 text-[11px]">admin@nanotech.com / Admin@123</div>
+                <div className="text-slate-400 text-[11px]">nenotech108@gmail.com / Admin@12345</div>
               </div>
               <span className="text-purple-400 text-xs opacity-0 group-hover:opacity-100 transition">Enter →</span>
             </button>

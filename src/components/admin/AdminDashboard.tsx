@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../context/AdminContext';
+import { useRBAC } from '../../context/RBACContext';
 import { AdminLogin } from './AdminLogin';
 import { AdminHeader } from './AdminHeader';
 import { AdminSidebar } from './AdminSidebar';
@@ -33,8 +34,29 @@ import { AuditLogsSection } from './sections/AuditLogsSection';
 import { BackupSection } from './sections/BackupSection';
 
 export function AdminDashboard() {
-  const { currentAdmin, adminSubView } = useAdmin();
+  const { currentAdmin, adminSubView, setAdminSubView } = useAdmin();
+  const { currentPath } = useRBAC();
   const [isNotifDrawerOpen, setIsNotifDrawerOpen] = useState(false);
+
+  // Sync subview from current URL (/adminpanel/<view>)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const clean = currentPath.split('?')[0];
+      if (clean.startsWith('/adminpanel') || clean.startsWith('/admin')) {
+        const sub = clean
+          .replace('/adminpanel/', '')
+          .replace('/admin/', '')
+          .replace('/adminpanel', '')
+          .replace('/admin', '');
+
+        if (sub && sub !== 'dashboard' && sub !== 'login') {
+          setAdminSubView(sub as any);
+        } else {
+          setAdminSubView('dashboard');
+        }
+      }
+    }
+  }, [currentPath, setAdminSubView]);
 
   // If not logged in as Admin, show the authentication portal
   if (!currentAdmin) {

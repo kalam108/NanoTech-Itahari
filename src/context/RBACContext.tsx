@@ -202,10 +202,10 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       addAuditLog('LOGIN_SUCCESS', '/api/auth/login', `Logged in as ${data.user.role} (${data.user.name})`);
 
       // Route to respective dashboard
-      if (data.user.role === 'superadmin') {
+      if (data.user.role === 'superadmin' && requiredRole !== 'admin') {
         navigate('/kalam-infos');
-      } else if (data.user.role === 'admin') {
-        navigate('/adminpanel');
+      } else if (data.user.role === 'admin' || requiredRole === 'admin') {
+        navigate('/adminpanel/dashboard');
       } else {
         navigate('/customer/dashboard');
       }
@@ -231,10 +231,10 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem('nanotech_session_token', simToken);
       localStorage.setItem('nanotech_user', JSON.stringify(seedUser));
 
-      if (seedUser.role === 'superadmin') {
+      if (seedUser.role === 'superadmin' && requiredRole !== 'admin') {
         navigate('/kalam-infos');
-      } else if (seedUser.role === 'admin') {
-        navigate('/adminpanel');
+      } else if (seedUser.role === 'admin' || requiredRole === 'admin') {
+        navigate('/adminpanel/dashboard');
       } else {
         navigate('/customer/dashboard');
       }
@@ -313,11 +313,11 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Quick Switcher for testing and verifying roles
   const quickLoginAs = async (targetRole: Role) => {
     if (targetRole === 'superadmin') {
-      await login('kalam@nanotech.com', 'Kalam@123');
+      await login('kalam@nanotech.com', 'Kalam@123', 'superadmin');
     } else if (targetRole === 'admin') {
-      await login('admin@nanotech.com', 'Admin@123');
+      await login('nenotech108@gmail.com', 'Admin@12345', 'admin');
     } else {
-      await login('customer@nanotech.com', 'Customer@123');
+      await login('customer@nanotech.com', 'Customer@123', 'customer');
     }
   };
 

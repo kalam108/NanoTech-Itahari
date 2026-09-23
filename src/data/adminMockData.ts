@@ -15,8 +15,8 @@ import {
 export const INITIAL_ADMIN_USERS: AdminUser[] = [
   {
     id: 'admin-super-01',
-    name: 'Kalamchy (Root Admin)',
-    email: 'admin@gmail.com',
+    name: 'NENOTECH108',
+    email: 'nenotech108@gmail.com',
     role: 'super_admin',
     avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
     lastLogin: new Date().toISOString(),

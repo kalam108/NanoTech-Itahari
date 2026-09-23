@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAdmin, AdminSubView } from '../../context/AdminContext';
 import { useApp } from '../../context/AppContext';
+import { useRBAC } from '../../context/RBACContext';
 import {
   LayoutDashboard,
   BarChart3,
@@ -165,9 +166,12 @@ export function AdminSidebar() {
     },
   ];
 
+  const { navigate: rbacNavigate } = useRBAC();
+
   const handleNavClick = (view: AdminSubView) => {
     setAdminSubView(view);
     setIsMobileDrawerOpen(false);
+    rbacNavigate(view === 'dashboard' ? '/adminpanel/dashboard' : `/adminpanel/${view}`);
   };
 
   const sidebarContent = (
@@ -272,7 +276,10 @@ export function AdminSidebar() {
       <div className="relative z-10 shrink-0 p-3 border-t border-amber-400/25 bg-amber-400/10 backdrop-blur-xs flex items-center gap-2">
         <button
           id="admin-sidebar-logout-btn"
-          onClick={logoutAdmin}
+          onClick={() => {
+            logoutAdmin();
+            rbacNavigate('/adminpanel/login');
+          }}
           className={`flex-1 py-2 px-3 rounded-xl border border-amber-400/35 bg-white/60 hover:bg-white/90 text-amber-950 text-xs font-bold flex items-center gap-2.5 transition-all shadow-xs hover:shadow-sm cursor-pointer ${
             isSidebarCollapsed ? 'justify-center px-0' : 'justify-start'
           }`}
