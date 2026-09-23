@@ -169,26 +169,9 @@ export function SuperadminSearchView() {
               {copiedUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
               {copiedUrl ? 'Copied URL!' : 'Copy Search URL'}
             </button>
-
-            <button
-              onClick={() => rbacNavigate('/search' + (query ? `?q=${encodeURIComponent(query)}` : ''))}
-              className="px-3 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
-              title="Switch to User Search URL on same domain"
-            >
-              <Search className="w-3.5 h-3.5 text-sky-400" />
-              User Search (/search)
-            </button>
-
-            <button
-              onClick={() => rbacNavigate('/adminpanel/search' + (query ? `?q=${encodeURIComponent(query)}` : ''))}
-              className="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
-              title="Switch to Admin Search URL on same domain"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
-              Admin Search (/adminpanel/search)
-            </button>
           </div>
         </div>
+
 
         {/* Master Search Input */}
         <div className="mt-5 relative">

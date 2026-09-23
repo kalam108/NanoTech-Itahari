@@ -54,6 +54,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const storedToken = localStorage.getItem('nanotech_session_token');
     const storedUser = localStorage.getItem('nanotech_user');
+    const storedAdmin = localStorage.getItem('nanotech_admin_session');
 
     if (storedToken && storedUser) {
       try {
@@ -64,6 +65,33 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.removeItem('nanotech_session_token');
         localStorage.removeItem('nanotech_user');
       }
+    } else if (storedAdmin) {
+      try {
+        const parsedAdmin = JSON.parse(storedAdmin);
+        if (parsedAdmin) {
+          const rbacAdmin: RBACUser = {
+            id: parsedAdmin.id || 'admin-super-01',
+            name: parsedAdmin.name || 'NENOTECH108',
+            email: parsedAdmin.email || 'nenotech108@gmail.com',
+            role: parsedAdmin.role === 'super_admin' ? 'superadmin' : 'admin',
+            status: 'active',
+            permissions: [
+              'products.view',
+              'products.create',
+              'products.edit',
+              'products.delete',
+              'orders.view',
+              'orders.edit',
+              'customers.view',
+              'reports.view',
+              'settings.manage',
+            ],
+            createdAt: new Date().toISOString(),
+          };
+          setCurrentUser(rbacAdmin);
+          setToken(`admin_session_${parsedAdmin.id}`);
+        }
+      } catch (e) {}
     }
   }, []);
 
@@ -140,8 +168,10 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return;
       }
 
+      const hasAdminSession = typeof window !== 'undefined' && Boolean(localStorage.getItem('nanotech_admin_session'));
+
       // If not logged in, redirect to admin login
-      if (!currentUser) {
+      if (!currentUser && !hasAdminSession) {
         setSecurityNotice('Authentication required. Please log into the Admin portal.');
         navigate(path.startsWith('/adminpanel') ? '/adminpanel/login' : '/admin/login');
         return;

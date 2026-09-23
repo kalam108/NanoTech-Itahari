@@ -63,7 +63,7 @@ function GoogleIcon({ className = 'w-4 h-4' }: { className?: string }) {
 export function AdminLogin() {
   const { loginAdmin, loginAdminDemo, logAdminAction } = useAdmin();
   const { setCurrentView, addToast, loginUser } = useApp();
-  const { navigate: rbacNavigate } = useRBAC();
+  const { login: rbacLogin, navigate: rbacNavigate } = useRBAC();
 
   // Mode: 'signin' | 'signup' | 'verify_otp'
   const [authMode, setAuthMode] = useState<'signin' | 'signup' | 'verify_otp'>('signin');
@@ -141,8 +141,14 @@ export function AdminLogin() {
     try {
       const res = await loginAdmin(email, password);
       if (res.success) {
+        try {
+          if (rbacLogin) {
+            await rbacLogin(email, password, 'admin');
+          }
+        } catch (e) {}
         addToast('success', `Welcome to NanoTech Command Center`);
         setCurrentView('admin_dashboard');
+        rbacNavigate('/adminpanel/dashboard');
       } else {
         setErrorMsg(res.error || 'Authentication error. Please verify credentials.');
       }
@@ -282,13 +288,19 @@ export function AdminLogin() {
     }
   };
 
-  const handleDemoSignIn = (presetEmail?: string, presetPass?: string) => {
-    if (presetEmail) {
-      setEmail(presetEmail);
-      if (presetPass) setPassword(presetPass);
-    }
+  const handleDemoSignIn = async (presetEmail?: string, presetPass?: string) => {
+    const targetEmail = presetEmail || SUPER_ADMIN_EMAIL || 'nenotech108@gmail.com';
+    const targetPass = presetPass || 'Admin@12345';
+    setEmail(targetEmail);
+    setPassword(targetPass);
     loginAdminDemo('super_admin');
+    try {
+      if (rbacLogin) {
+        await rbacLogin(targetEmail, targetPass, 'admin');
+      }
+    } catch (e) {}
     setCurrentView('admin_dashboard');
+    rbacNavigate('/adminpanel/dashboard');
   };
 
   return (

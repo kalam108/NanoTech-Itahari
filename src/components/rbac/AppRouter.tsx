@@ -12,14 +12,8 @@ import { CustomerOrdersView } from './customer/CustomerOrdersView';
 import { CustomerProfileView } from './customer/CustomerProfileView';
 import { CustomerSignupPage } from './customer/CustomerSignupPage';
 
-// Admin Components
-import { AdminLayout } from './admin/AdminLayout';
-import { AdminDashboardView } from './admin/AdminDashboardView';
-import { AdminProductsView } from './admin/AdminProductsView';
-import { AdminOrdersView } from './admin/AdminOrdersView';
-import { AdminCustomersView } from './admin/AdminCustomersView';
-import { AdminReportsView } from './admin/AdminReportsView';
-import { AdminSearchView } from './admin/AdminSearchView';
+// Search Page
+import { UserSearchPage } from '../../pages/UserSearchPage';
 
 // Superadmin Components
 import { SuperadminLayout } from './superadmin/SuperadminLayout';

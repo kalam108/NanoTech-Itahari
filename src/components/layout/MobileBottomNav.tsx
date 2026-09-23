@@ -121,12 +121,12 @@ export function MobileBottomNav() {
               <button
                 onClick={() => {
                   setIsMoreMenuOpen(false);
-                  rbacNavigate('/admin');
+                  rbacNavigate('/adminpanel');
                 }}
                 className="p-3 rounded-2xl bg-purple-50 text-purple-700 hover:bg-purple-100 flex items-center gap-2.5 transition text-left cursor-pointer"
               >
                 <Shield className="w-4 h-4 text-purple-600 shrink-0" />
-                <span>Staff Admin Portal</span>
+                <span>NanoTech Admin Portal</span>
               </button>
             </div>
           </div>
