@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://nanotech-itahari.vercel.app/sitemap.xml
