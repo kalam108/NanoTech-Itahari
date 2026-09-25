@@ -67,7 +67,7 @@ export function getViewFromPath(pathname: string): ParsedRoute {
     case '/seller_dashboard':
       return { view: 'seller_dashboard' };
     case '/search':
-      return { view: 'search' };
+      return { view: 'products' };
     case '/chat':
     case '/messages':
       return { view: 'chat' };
@@ -138,7 +138,7 @@ export function getPathFromView(
     case 'seller_dashboard':
       return '/store/seller';
     case 'search':
-      return '/search';
+      return '/store/products';
     case 'chat':
     case 'messages':
       return '/store/chat';

@@ -37,12 +37,7 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
   const path = cleanPath.endsWith('/') && cleanPath.length > 1 ? cleanPath.slice(0, -1) : cleanPath;
 
   const renderRoute = () => {
-    // 1. DEDICATED USER SEARCH ROUTE (/search or /store/search)
-    if (path === '/search' || path === '/store/search') {
-      return <UserSearchPage />;
-    }
-
-    // 2. SUPERADMIN ROUTES (/superadmin & legacy /kalam-infos)
+    // 1. SUPERADMIN ROUTES (/superadmin & legacy /kalam-infos)
     if (path.startsWith('/superadmin') || path.startsWith('/kalam-infos')) {
       if (path === '/superadmin/login' || path === '/kalam-infos/login') {
         return <UnifiedLoginPage initialRole="superadmin" />;

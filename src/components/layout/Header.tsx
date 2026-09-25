@@ -105,9 +105,12 @@ export function Header({ onOpenAiAdvisor }: HeaderProps) {
     if (selectedSearchCategory !== 'All Categories') {
       setFilters(prev => ({ ...prev, category: selectedSearchCategory }));
     }
-    // Route directly to dedicated /search URL on the same domain
+    setCurrentView('products');
     const query = filters.searchQuery ? `?q=${encodeURIComponent(filters.searchQuery)}` : '';
-    rbacNavigate(`/search${query}`);
+    rbacNavigate(`/store/products${query}`);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 350, behavior: 'smooth' });
+    }
   };
 
   const handleSelectNavCategory = (catName: string, condition: 'all' | 'Refurbished' | 'Used' = 'all') => {

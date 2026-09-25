@@ -276,6 +276,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const clean = currentPath.split('?')[0];
+
+      // Sync search query from URL parameter if present
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlQ = urlParams.get('q');
+      if (urlQ !== null) {
+        setFilters(prev => (prev.searchQuery !== urlQ ? { ...prev, searchQuery: urlQ } : prev));
+      }
+
       // Only process store routes or root
       if (
         !clean.startsWith('/admin') &&

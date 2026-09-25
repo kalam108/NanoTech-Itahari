@@ -83,7 +83,7 @@ function MainLayout() {
       case 'messages':
         return <ChatView />;
       case 'search':
-        return <UserSearchPage />;
+        return <ProductsPage />;
       case 'seller_dashboard':
         return <SellerDashboard />;
       case 'sell':
