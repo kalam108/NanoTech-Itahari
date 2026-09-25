@@ -125,12 +125,12 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const path = currentPath;
 
-    // 1. SUPERADMIN ROUTES PROTECTION (/kalam-infos and /superadmin)
+    // 1. SUPERADMIN ROUTES PROTECTION (/superadmin and legacy /kalam-infos)
     if (path.startsWith('/superadmin') || path.startsWith('/kalam-infos')) {
       if (path === '/superadmin/login' || path === '/kalam-infos/login') {
         // If already logged in as superadmin, go to dashboard
         if (currentUser && currentUser.role === 'superadmin') {
-          navigate('/kalam-infos');
+          navigate('/superadmin/dashboard');
         }
         return;
       }
@@ -138,7 +138,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // If not logged in, redirect to superadmin login
       if (!currentUser) {
         setSecurityNotice('Authentication required. Please log in with Superadmin credentials.');
-        navigate(path.startsWith('/kalam-infos') ? '/kalam-infos/login' : '/superadmin/login');
+        navigate('/superadmin/login');
         return;
       }
 
@@ -146,7 +146,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (currentUser.role === 'customer') {
         addAuditLog('FORBIDDEN_SUPERADMIN_ACCESS', path, `Customer ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Customer accounts are strictly prohibited from accessing the Superadmin console.');
-        navigate('/customer/dashboard');
+        navigate('/store');
         return;
       }
 
@@ -154,16 +154,16 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (currentUser.role === 'admin') {
         addAuditLog('FORBIDDEN_SUPERADMIN_ACCESS', path, `Admin ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Standard administrators cannot access the Superadmin console (Reserved for Kalam).');
-        navigate('/adminpanel');
+        navigate('/admin/dashboard');
         return;
       }
     }
 
-    // 2. ADMIN ROUTES PROTECTION (/adminpanel and /admin)
+    // 2. ADMIN ROUTES PROTECTION (/admin and legacy /adminpanel)
     if (path.startsWith('/admin') || path.startsWith('/adminpanel')) {
       if (path === '/admin/login' || path === '/adminpanel/login') {
         if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'superadmin')) {
-          navigate(currentUser.role === 'superadmin' ? '/kalam-infos' : '/adminpanel');
+          navigate(currentUser.role === 'superadmin' ? '/superadmin/dashboard' : '/admin/dashboard');
         }
         return;
       }
@@ -173,7 +173,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // If not logged in, redirect to admin login
       if (!currentUser && !hasAdminSession) {
         setSecurityNotice('Authentication required. Please log into the Admin portal.');
-        navigate(path.startsWith('/adminpanel') ? '/adminpanel/login' : '/admin/login');
+        navigate('/admin/login');
         return;
       }
 
@@ -181,7 +181,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (currentUser.role === 'customer') {
         addAuditLog('FORBIDDEN_ADMIN_ACCESS', path, `Customer ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Customer accounts cannot access administrative routes.');
-        navigate('/customer/dashboard');
+        navigate('/store');
         return;
       }
     }
@@ -231,13 +231,13 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       addAuditLog('LOGIN_SUCCESS', '/api/auth/login', `Logged in as ${data.user.role} (${data.user.name})`);
 
-      // Route to respective dashboard
+      // Route to respective separate dashboard
       if (data.user.role === 'superadmin' && requiredRole !== 'admin') {
-        navigate('/kalam-infos');
+        navigate('/superadmin/dashboard');
       } else if (data.user.role === 'admin' || requiredRole === 'admin') {
-        navigate('/adminpanel/dashboard');
+        navigate('/admin/dashboard');
       } else {
-        navigate('/customer/dashboard');
+        navigate('/store');
       }
 
       return { success: true };
@@ -262,11 +262,11 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem('nanotech_user', JSON.stringify(seedUser));
 
       if (seedUser.role === 'superadmin' && requiredRole !== 'admin') {
-        navigate('/kalam-infos');
+        navigate('/superadmin/dashboard');
       } else if (seedUser.role === 'admin' || requiredRole === 'admin') {
-        navigate('/adminpanel/dashboard');
+        navigate('/admin/dashboard');
       } else {
-        navigate('/customer/dashboard');
+        navigate('/store');
       }
 
       return { success: true };
@@ -336,7 +336,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setToken(null);
       localStorage.removeItem('nanotech_session_token');
       localStorage.removeItem('nanotech_user');
-      navigate('/');
+      navigate('/store');
     }
   };
 

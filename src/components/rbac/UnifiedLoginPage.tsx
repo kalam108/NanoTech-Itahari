@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRBAC } from '../../context/RBACContext';
 import { Role } from '../../types/rbac';
-import { Shield, Lock, User, Key, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Shield, Lock, User, Key, ArrowRight, AlertCircle, CheckCircle2, Store } from 'lucide-react';
 
 export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole = 'customer' }) => {
   const { login, navigate, quickLoginAs } = useRBAC();
@@ -244,6 +244,24 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
             </button>
           </div>
         )}
+
+        {/* Separated Portal Switcher Links */}
+        <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <button
+            onClick={() => navigate('/store')}
+            className="flex items-center gap-1.5 hover:text-white transition cursor-pointer"
+          >
+            <Store className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Storefront (/store)</span>
+          </button>
+          <button
+            onClick={() => navigate('/admin')}
+            className="flex items-center gap-1.5 hover:text-white transition cursor-pointer"
+          >
+            <Shield className="w-3.5 h-3.5 text-purple-400" />
+            <span>Admin Portal (/admin)</span>
+          </button>
+        </div>
       </div>
     </div>
   );

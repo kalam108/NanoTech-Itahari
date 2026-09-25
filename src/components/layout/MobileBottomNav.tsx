@@ -34,7 +34,6 @@ export function MobileBottomNav() {
   const handleTabClick = (view: string) => {
     setIsMoreMenuOpen(false);
     setCurrentView(view);
-    rbacNavigate('/');
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -121,12 +120,22 @@ export function MobileBottomNav() {
               <button
                 onClick={() => {
                   setIsMoreMenuOpen(false);
-                  rbacNavigate('/adminpanel');
+                  rbacNavigate('/admin');
                 }}
                 className="p-3 rounded-2xl bg-purple-50 text-purple-700 hover:bg-purple-100 flex items-center gap-2.5 transition text-left cursor-pointer"
               >
                 <Shield className="w-4 h-4 text-purple-600 shrink-0" />
-                <span>NanoTech Admin Portal</span>
+                <span>Admin Portal (/admin)</span>
+              </button>
+              <button
+                onClick={() => {
+                  setIsMoreMenuOpen(false);
+                  rbacNavigate('/superadmin/dashboard');
+                }}
+                className="p-3 rounded-2xl bg-amber-50 text-amber-800 hover:bg-amber-100 flex items-center gap-2.5 transition text-left cursor-pointer col-span-2"
+              >
+                <Shield className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Superadmin Console (/superadmin)</span>
               </button>
             </div>
           </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRBAC } from '../../context/RBACContext';
 import { UnifiedLoginPage } from './UnifiedLoginPage';
-import { DualUrlPortalBar } from '../layout/DualUrlPortalBar';
 
 // Customer Components
 import { CustomerLayout } from './customer/CustomerLayout';
@@ -38,14 +37,14 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
   const path = cleanPath.endsWith('/') && cleanPath.length > 1 ? cleanPath.slice(0, -1) : cleanPath;
 
   const renderRoute = () => {
-    // 1. DEDICATED USER SEARCH ROUTE (/search) on the same domain
-    if (path === '/search') {
+    // 1. DEDICATED USER SEARCH ROUTE (/search or /store/search)
+    if (path === '/search' || path === '/store/search') {
       return <UserSearchPage />;
     }
 
-    // 2. SUPERADMIN ROUTES (/kalam-infos & /superadmin)
-    if (path.startsWith('/kalam-infos') || path.startsWith('/superadmin')) {
-      if (path === '/kalam-infos/login' || path === '/superadmin/login') {
+    // 2. SUPERADMIN ROUTES (/superadmin & legacy /kalam-infos)
+    if (path.startsWith('/superadmin') || path.startsWith('/kalam-infos')) {
+      if (path === '/superadmin/login' || path === '/kalam-infos/login') {
         return <UnifiedLoginPage initialRole="superadmin" />;
       }
 
@@ -53,9 +52,9 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
       return (
         <SuperadminLayout>
           {(() => {
-            const sub = path.startsWith('/kalam-infos')
-              ? path.slice('/kalam-infos'.length)
-              : path.slice('/superadmin'.length);
+            const sub = path.startsWith('/superadmin')
+              ? path.slice('/superadmin'.length)
+              : path.slice('/kalam-infos'.length);
 
             switch (sub) {
               case '/search':
@@ -134,10 +133,5 @@ export const AppRouter: React.FC<{ children: React.ReactNode }> = ({ children })
     return <>{children}</>;
   };
 
-  return (
-    <>
-      <DualUrlPortalBar />
-      {renderRoute()}
-    </>
-  );
+  return renderRoute();
 };

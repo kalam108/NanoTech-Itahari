@@ -177,15 +177,15 @@ function MainLayout() {
 export function App() {
   return (
     <ServerProvider>
-      <AppProvider>
-        <AdminProvider>
-          <RBACProvider>
+      <RBACProvider>
+        <AppProvider>
+          <AdminProvider>
             <AppRouter>
               <MainLayout />
             </AppRouter>
-          </RBACProvider>
-        </AdminProvider>
-      </AppProvider>
+          </AdminProvider>
+        </AppProvider>
+      </RBACProvider>
     </ServerProvider>
   );
 }

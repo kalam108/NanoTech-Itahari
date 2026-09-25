@@ -16,7 +16,7 @@ export const CustomerLayout: React.FC<{ children: ReactNode }> = ({ children }) 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
       {/* Customer Navigation Bar */}
-      <header className="bg-slate-900 border-b border-slate-800 sticky top-10 z-40">
+      <header className="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -75,10 +75,11 @@ export const CustomerLayout: React.FC<{ children: ReactNode }> = ({ children }) 
               </button>
 
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/store')}
                 className="hidden sm:inline-flex text-xs text-slate-400 hover:text-white px-2.5 py-1.5 rounded-md hover:bg-slate-800 cursor-pointer"
+                title="Public Storefront (/store)"
               >
-                Storefront
+                Storefront (/store)
               </button>
 
               <div className="flex items-center gap-2 pl-3 border-l border-slate-800">

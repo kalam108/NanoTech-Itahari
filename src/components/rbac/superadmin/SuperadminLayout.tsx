@@ -19,8 +19,8 @@ import {
 export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentPath, navigate, currentUser, logout } = useRBAC();
 
-  const isLegacySuper = currentPath.startsWith('/superadmin') && !currentPath.startsWith('/kalam-infos');
-  const baseSuper = isLegacySuper ? '/superadmin' : '/kalam-infos';
+  const isLegacySuper = currentPath.startsWith('/kalam-infos');
+  const baseSuper = isLegacySuper ? '/kalam-infos' : '/superadmin';
 
   const navItems = [
     { label: 'Master Dashboard', path: `${baseSuper}/dashboard`, icon: LayoutDashboard },
@@ -54,7 +54,7 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
                 <span>NanoTech</span>
                 <span className="text-[9px] bg-gradient-to-r from-amber-500 to-amber-600 text-white px-1.5 py-0.2 rounded-full font-black shadow-xs tracking-wider">ROOT</span>
               </div>
-              <div className="text-[11px] text-amber-700 font-bold tracking-tight">Kalam — /kalam-infos</div>
+              <div className="text-[11px] text-amber-700 font-bold tracking-tight">Kalam — /superadmin</div>
             </div>
           </div>
         </div>
@@ -129,21 +129,21 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
           </button>
 
           <button
-            onClick={() => navigate('/adminpanel')}
+            onClick={() => navigate('/admin/dashboard')}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-purple-800 hover:bg-purple-500/10 transition border border-purple-300/30 font-medium cursor-pointer"
-            title="Full Admin Control (/adminpanel)"
+            title="Admin Portal (/admin)"
           >
             <ShieldAlert className="w-3.5 h-3.5 text-purple-600" />
-            <span>Full Admin Control (/adminpanel)</span>
+            <span>Admin Portal (/admin)</span>
           </button>
 
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/store')}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-slate-700 hover:text-slate-900 hover:bg-white/70 transition border border-transparent cursor-pointer font-medium"
-            title="Full Store Control (/)"
+            title="Customer Storefront (/store)"
           >
             <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
-            <span>Full Store Control (Storefront /)</span>
+            <span>Storefront (/store)</span>
           </button>
 
           <button
@@ -164,14 +164,14 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
             <span className="text-amber-700 font-bold">Kalam — Superadmin</span>
             <span className="text-slate-300">/</span>
             <span className="text-slate-700 font-semibold uppercase tracking-wider">
-              {currentPath.replace('/kalam-infos/', '').replace('/superadmin/', '').replace('/kalam-infos', '') || 'Dashboard'}
+              {currentPath.replace('/kalam-infos/', '').replace('/superadmin/', '').replace('/kalam-infos', '').replace('/superadmin', '') || 'Dashboard'}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="text-[11px] bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full font-mono font-medium flex items-center gap-1.5 shadow-xs">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
-              Console: /kalam-infos
+              Console: /superadmin
             </span>
           </div>
         </header>

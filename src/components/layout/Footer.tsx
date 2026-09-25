@@ -246,6 +246,35 @@ export function Footer() {
                 {t('needHelp')}
               </button>
             </li>
+            <li className="pt-2 border-t border-slate-200/80">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">Portals & System URLs</span>
+              <div className="flex flex-col space-y-1.5">
+                <button
+                  onClick={() => {
+                    setCurrentView('home');
+                    rbacNavigate('/store');
+                  }}
+                  className="hover:text-indigo-600 text-slate-600 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                  <span>Storefront (/store)</span>
+                </button>
+                <button
+                  onClick={() => rbacNavigate('/admin')}
+                  className="hover:text-purple-600 text-slate-600 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                  <span>Admin Portal (/admin)</span>
+                </button>
+                <button
+                  onClick={() => rbacNavigate('/superadmin/dashboard')}
+                  className="hover:text-amber-600 text-slate-600 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                  <span>Superadmin (/superadmin)</span>
+                </button>
+              </div>
+            </li>
           </ul>
         </div>
 
@@ -313,24 +342,6 @@ export function Footer() {
           <p>© {new Date().getFullYear()} Nanotech Solution. {t('locationItahari')}. {isNepali ? 'सर्वाधिकार सुरक्षित।' : 'All rights reserved.'}</p>
           <div className="flex items-center flex-wrap gap-3">
             <LanguageToggle variant="footer" />
-            <span className="text-slate-300">·</span>
-            <button
-              onClick={() => rbacNavigate('/search')}
-              className="text-[11px] text-slate-500 hover:text-sky-600 transition-colors cursor-pointer flex items-center gap-1 font-medium"
-              title="Dedicated User Search URL: /search"
-            >
-              <Search className="w-3 h-3 text-sky-500" />
-              <span>User Search (/search)</span>
-            </button>
-            <span className="text-slate-300">·</span>
-            <button
-              onClick={() => rbacNavigate('/admin')}
-              className="text-[11px] text-slate-500 hover:text-amber-600 transition-colors cursor-pointer flex items-center gap-1 font-medium"
-              title="Dedicated Admin URL: /admin"
-            >
-              <Shield className="w-3 h-3 text-amber-500" />
-              <span>Admin Portal (/admin)</span>
-            </button>
             <span className="text-slate-300">·</span>
             <p className="flex items-center gap-1.5">
               {isNepali ? 'नेपालमा निर्मित' : 'Engineered for Nepal with'} <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />

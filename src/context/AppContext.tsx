@@ -56,6 +56,8 @@ import {
   createOrderOnServer,
   updateOrderStatusOnServer,
 } from '../lib/serverClient';
+import { useRBAC } from './RBACContext';
+import { getViewFromPath, getPathFromView } from '../lib/storeRouting';
 
 interface FilterState {
   searchQuery: string;
@@ -227,9 +229,72 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return saved ? JSON.parse(saved) : INITIAL_USERS[3]; // Alex Rivera (Customer)
   });
 
-  const [currentView, setCurrentView] = useState<string>('home');
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const { currentPath, navigate: rbacNavigate } = useRBAC();
+
+  // Initialize view and selected IDs directly from URL path for instant deep linking
+  const initialRoute = typeof window !== 'undefined' ? getViewFromPath(window.location.pathname) : { view: 'home' };
+  const [currentView, setCurrentViewState] = useState<string>(initialRoute.view);
+  const [selectedProductId, setSelectedProductIdState] = useState<string | null>(initialRoute.productId || null);
+  const [selectedOrderId, setSelectedOrderIdState] = useState<string | null>(initialRoute.orderId || null);
+
+  const setCurrentView = (view: string) => {
+    setCurrentViewState(view);
+    const targetPath = getPathFromView(view, selectedProductId, selectedOrderId);
+    if (typeof window !== 'undefined') {
+      const clean = currentPath.split('?')[0];
+      const isSpecialRoute =
+        clean.startsWith('/admin') ||
+        clean.startsWith('/adminpanel') ||
+        clean.startsWith('/superadmin') ||
+        clean.startsWith('/kalam-infos');
+
+      if (!isSpecialRoute) {
+        if (clean !== targetPath) {
+          rbacNavigate(targetPath);
+        }
+      } else if (view === 'home' || view === 'products' || view === 'cart' || view.startsWith('user_')) {
+        rbacNavigate(targetPath);
+      }
+    }
+  };
+
+  const setSelectedProductId = (id: string | null) => {
+    setSelectedProductIdState(id);
+    if (id && currentView === 'product_detail') {
+      rbacNavigate(`/store/product/${id}`);
+    }
+  };
+
+  const setSelectedOrderId = (id: string | null) => {
+    setSelectedOrderIdState(id);
+    if (id && currentView === 'orders') {
+      rbacNavigate(`/store/order/${id}`);
+    }
+  };
+
+  // Sync currentView when browser back/forward buttons or URL path changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const clean = currentPath.split('?')[0];
+      // Only process store routes or root
+      if (
+        !clean.startsWith('/admin') &&
+        !clean.startsWith('/adminpanel') &&
+        !clean.startsWith('/superadmin') &&
+        !clean.startsWith('/kalam-infos') &&
+        !clean.startsWith('/customer')
+      ) {
+        const parsed = getViewFromPath(clean);
+        setCurrentViewState(parsed.view);
+        if (parsed.productId) {
+          setSelectedProductIdState(parsed.productId);
+        }
+        if (parsed.orderId) {
+          setSelectedOrderIdState(parsed.orderId);
+        }
+      }
+    }
+  }, [currentPath]);
 
   const [products, setProducts] = useState<Product[]>(() => {
     const saved = localStorage.getItem('nanotech_products');
