@@ -6,6 +6,7 @@ import { AdminHeader } from './AdminHeader';
 import { AdminSidebar } from './AdminSidebar';
 import { AdminGlobalSearchModal } from './AdminGlobalSearchModal';
 import { AdminNotificationDrawer } from './AdminNotificationDrawer';
+import { SameDomainPortalBar } from '../common/SameDomainPortalBar';
 
 // Dynamic Sub-views
 import { DashboardOverviewSection } from './sections/DashboardOverviewSection';
@@ -158,6 +159,7 @@ export function AdminDashboard() {
           className="flex-1 h-full overflow-y-auto min-w-0 p-4 sm:p-6 lg:p-7 bg-[#f8fafc]/80 scrollbar-thin scrollbar-thumb-slate-300 hover:scrollbar-thumb-slate-400"
         >
           <div className="max-w-7xl mx-auto space-y-5 animate-in fade-in duration-150 pb-16">
+            <SameDomainPortalBar />
             {renderActiveSection()}
           </div>
         </main>

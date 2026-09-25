@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useRBAC } from '../../../context/RBACContext';
+import { SameDomainPortalBar } from '../../common/SameDomainPortalBar';
 import {
   Lock,
   LayoutDashboard,
@@ -177,7 +178,8 @@ export const SuperadminLayout: React.FC<{ children: ReactNode }> = ({ children }
         </header>
 
         {/* Content - Dedicated Smooth Scroll Viewport */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto scroll-smooth">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto scroll-smooth space-y-5">
+          <SameDomainPortalBar />
           {children}
         </main>
       </div>
