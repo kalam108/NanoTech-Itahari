@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
@@ -87,7 +88,7 @@ const USERS: ServerUser[] = [
     passwordHash: 'Admin@123',
     role: 'admin',
     status: 'active',
-    phone: '+977 9842100001',
+    phone: '+977 9852055346',
     department: 'Hardware Operations',
     permissions: [
       'products.view',
@@ -1003,7 +1004,9 @@ async function setupFrontendServing() {
     });
     app.use(vite.middlewares);
   } else if (!process.env.VERCEL) {
-    const distPath = path.join(process.cwd(), 'dist');
+    const distPath = fs.existsSync(path.join(process.cwd(), 'dist'))
+      ? path.join(process.cwd(), 'dist')
+      : path.resolve(__dirname, '../dist');
     app.use(express.static(distPath));
     app.get('*', (_req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
