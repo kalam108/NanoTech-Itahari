@@ -6,7 +6,18 @@ export const SUPABASE_PROJECT_ID = 'zovjbvddiimvxragxxni';
 export const DEFAULT_SUPABASE_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co`;
 export const SUPABASE_URL = DEFAULT_SUPABASE_URL;
 export const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_eruSA7SXKOr6YmrDXkZQKA_e77938Pk';
-export const DEFAULT_SUPABASE_SECRET_KEY = process?.env?.SUPABASE_SERVICE_ROLE_KEY || '';
+const getSafeProcessEnv = (key: string): string => {
+  try {
+    if (typeof process !== 'undefined' && process?.env) {
+      return (process.env as Record<string, string | undefined>)[key] || '';
+    }
+  } catch (e) {
+    // browser sandbox
+  }
+  return '';
+};
+
+export const DEFAULT_SUPABASE_SECRET_KEY = getSafeProcessEnv('SUPABASE_SERVICE_ROLE_KEY');
 
 // Super Admin configured by user
 export const SUPER_ADMIN_EMAIL = 'kalamchy88@gmail.com';
@@ -20,8 +31,8 @@ export const GOOGLE_CLIENT_ID = '382033633337-3qhrsmpltekbcri6jm2tja4ho89h7jiq.a
 export const GOOGLE_CALLBACK_URL = `https://${SUPABASE_PROJECT_ID}.supabase.co/auth/v1/callback`;
 
 const env = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
-export const supabaseUrl = env.VITE_SUPABASE_URL || process?.env?.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
-export const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || process?.env?.VITE_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+export const supabaseUrl = env.VITE_SUPABASE_URL || getSafeProcessEnv('VITE_SUPABASE_URL') || DEFAULT_SUPABASE_URL;
+export const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || getSafeProcessEnv('VITE_SUPABASE_ANON_KEY') || DEFAULT_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 

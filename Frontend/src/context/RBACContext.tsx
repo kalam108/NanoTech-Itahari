@@ -147,7 +147,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       // If logged in as customer, STRICTLY FORBIDDEN!
-      if (currentUser.role === 'customer') {
+      if (currentUser && currentUser.role === 'customer') {
         addAuditLog('FORBIDDEN_SUPERADMIN_ACCESS', path, `Customer ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Customer accounts are strictly prohibited from accessing the Superadmin console.');
         navigate('/store');
@@ -155,7 +155,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       // If logged in as admin, STRICTLY FORBIDDEN!
-      if (currentUser.role === 'admin') {
+      if (currentUser && currentUser.role === 'admin') {
         addAuditLog('FORBIDDEN_SUPERADMIN_ACCESS', path, `Admin ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Standard administrators cannot access the Superadmin console (Reserved for Kalam).');
         navigate('/admin/dashboard');
@@ -182,7 +182,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
 
       // If logged in as customer, STRICTLY FORBIDDEN!
-      if (currentUser.role === 'customer') {
+      if (currentUser && currentUser.role === 'customer') {
         addAuditLog('FORBIDDEN_ADMIN_ACCESS', path, `Customer ${currentUser.email} blocked from accessing ${path}`);
         setSecurityNotice('Access Denied: Customer accounts cannot access administrative routes.');
         navigate('/store');
