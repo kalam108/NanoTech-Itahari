@@ -3,7 +3,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
 import { GoogleGenAI } from '@google/genai';
-import { INITIAL_PRODUCTS, INITIAL_ORDERS, INITIAL_CATEGORIES } from './src/data/mockData';
+import { INITIAL_PRODUCTS, INITIAL_ORDERS, INITIAL_CATEGORIES } from '../Frontend/src/data/mockData';
 
 dotenv.config();
 
@@ -994,7 +994,10 @@ app.get('/api/supabase/status', (_req, res) => {
 // Vite middleware in development or production SPA static serving
 async function setupFrontendServing() {
   if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    const frontendRoot = path.resolve(process.cwd(), 'Frontend');
     const vite = await createViteServer({
+      root: frontendRoot,
+      configFile: path.resolve(frontendRoot, 'vite.config.ts'),
       server: { middlewareMode: true },
       appType: 'spa',
     });
