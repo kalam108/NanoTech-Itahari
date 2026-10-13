@@ -15,15 +15,15 @@ import { CustomerSignupPage } from './customer/CustomerSignupPage';
 import { UserSearchPage } from '../../pages/UserSearchPage';
 
 // Superadmin Components
-import { SuperadminLayout } from './superadmin/SuperadminLayout';
-import { SuperadminDashboardView } from './superadmin/SuperadminDashboardView';
-import { SuperadminAdminsView } from './superadmin/SuperadminAdminsView';
-import { SuperadminCustomersView } from './superadmin/SuperadminCustomersView';
-import { SuperadminProductsView } from './superadmin/SuperadminProductsView';
-import { SuperadminOrdersView } from './superadmin/SuperadminOrdersView';
-import { SuperadminPermissionsView } from './superadmin/SuperadminPermissionsView';
-import { SuperadminSettingsView } from './superadmin/SuperadminSettingsView';
-import { SuperadminSearchView } from './superadmin/SuperadminSearchView';
+import { SuperadminLayout } from './SuperadminLayout';
+import { SuperadminDashboardView } from './SuperadminDashboardView';
+import { SuperadminAdminsView } from './SuperadminAdminsView';
+import { SuperadminCustomersView } from './SuperadminCustomersView';
+import { SuperadminProductsView } from './SuperadminProductsView';
+import { SuperadminOrdersView } from './SuperadminOrdersView';
+import { SuperadminPermissionsView } from './SuperadminPermissionsView';
+import { SuperadminSettingsView } from './SuperadminSettingsView';
+import { SuperadminSearchView } from './SuperadminSearchView';
 
 // Admin Enterprise Dashboard & Login Components
 import { AdminDashboard } from '../admin/AdminDashboard';

@@ -1,38 +1,38 @@
 import React, { useState } from 'react';
-import { useRBAC } from '../../../context/RBACContext';
+import { useRBAC } from '../../context/RBACContext';
+import { useApp } from '../../context/AppContext';
 import { Users, Search, ShieldCheck, Lock, Key, Ban, CheckCircle2 } from 'lucide-react';
 
 export const SuperadminCustomersView: React.FC = () => {
-  const [customers, setCustomers] = useState([
-    { id: 'usr-sita-03', name: 'Sita Sharma', email: 'customer@nanotech.com', phone: '+977 9812345678', location: 'Itahari, Ward-6', orders: 4, status: 'active', joined: '2025-04-12' },
-    { id: 'usr-bik-04', name: 'Bikram Thapa', email: 'bikram.thapa@gmail.com', phone: '+977 9845012345', location: 'Biratnagar, Morang', orders: 3, status: 'active', joined: '2025-05-20' },
-    { id: 'usr-deep-05', name: 'Deepak Pokhrel', email: 'deepak.pokhrel@yahoo.com', phone: '+977 9803322114', location: 'Dharan, Sunsari', orders: 6, status: 'active', joined: '2025-02-14' },
-    { id: 'usr-anj-06', name: 'Anjali Rai', email: 'anjali.rai@gmail.com', phone: '+977 9811223344', location: 'Damak, Jhapa', orders: 2, status: 'active', joined: '2025-06-18' },
-    { id: 'usr-sus-07', name: 'Sushil Shrestha', email: 'sushil.shrestha@hotmail.com', phone: '+977 9809988776', location: 'Inaruwa, Sunsari', orders: 1, status: 'suspended', joined: '2025-08-01' },
-  ]);
+  const { addAuditLog } = useRBAC();
+  const { users, orders, updateUserStatus, addToast } = useApp();
 
   const [search, setSearch] = useState('');
   const [actionAlert, setActionAlert] = useState<string | null>(null);
 
+  // Filter users that are customers
+  const customerList = users.filter((u) => u.role === 'customer' || !u.role);
+
   const toggleStatus = (id: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
-    setCustomers((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c))
-    );
-    setActionAlert(`Customer account ${newStatus === 'active' ? 'reactivated' : 'suspended'} by Kalam.`);
+    const nextStatus = currentStatus === 'active' ? 'suspended' : 'active';
+    updateUserStatus(id, nextStatus as 'active' | 'suspended');
+    addAuditLog('CUSTOMER_STATUS_CHANGED', id, `Customer status changed to ${nextStatus}`);
+    setActionAlert(`Customer account ${nextStatus === 'active' ? 'reactivated' : 'suspended'} by Kalam.`);
+    addToast('info', `Customer account ${nextStatus === 'active' ? 'reactivated' : 'suspended'}`);
     setTimeout(() => setActionAlert(null), 3500);
   };
 
   const handleResetPassword = (name: string) => {
     setActionAlert(`Temporary password reset token issued for ${name}.`);
+    addToast('success', `Temporary password reset token issued for ${name}`);
     setTimeout(() => setActionAlert(null), 3500);
   };
 
-  const filtered = customers.filter(
+  const filtered = customerList.filter(
     (c) =>
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       c.email.toLowerCase().includes(search.toLowerCase()) ||
-      c.location.toLowerCase().includes(search.toLowerCase())
+      (c.phone && c.phone.toLowerCase().includes(search.toLowerCase()))
   );
 
   return (
@@ -97,9 +97,11 @@ export const SuperadminCustomersView: React.FC = () => {
                       <div className="text-[11px] text-slate-400">{c.phone}</div>
                     </td>
 
-                    <td className="p-4 text-slate-300">{c.location}</td>
+                    <td className="p-4 text-slate-300">Nepal</td>
 
-                    <td className="p-4 font-bold text-white">{c.orders} orders</td>
+                    <td className="p-4 font-bold text-white">
+                      {orders.filter((o) => o.buyerId === c.id || o.buyerEmail === c.email).length} orders
+                    </td>
 
                     <td className="p-4">
                       <span

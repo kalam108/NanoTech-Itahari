@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+import { useApp } from '../../context/AppContext';
 import { PackageCheck, Search, DollarSign, Download, Filter } from 'lucide-react';
 
 export const SuperadminOrdersView: React.FC = () => {
-  const [orders] = useState([
+  const { orders: storeOrders, formatPrice, updateOrderStatus } = useApp();
+  const [search, setSearch] = useState('');
+
+  // Normalize store orders or display mock if empty
+  const orders = storeOrders.length > 0 ? storeOrders.map((o) => ({
+    id: o.id,
+    customer: o.buyerName || 'Verified Customer',
+    total: o.total,
+    status: o.status,
+    date: (o.createdAt || new Date().toISOString()).split('T')[0],
+    payment: o.paymentMethod || 'Online / COD',
+    courier: o.shippingAddress?.city ? `${o.shippingAddress.city} Express` : 'Express Courier',
+  })) : [
     { id: 'ORD-9021', customer: 'Sita Sharma', total: 118500, status: 'Processing', date: '2026-09-02', payment: 'Khalti Digital Wallet', courier: 'AirCargo Nepal' },
     { id: 'ORD-9022', customer: 'Bikram Thapa', total: 24500, status: 'Shipped', date: '2026-09-01', payment: 'eSewa Pay', courier: 'Nepal Can Move' },
     { id: 'ORD-9020', customer: 'Deepak Pokhrel', total: 95000, status: 'Processing', date: '2026-08-31', payment: 'Bank Wire (Nabil)', courier: 'Express Courier' },
     { id: 'ORD-9018', customer: 'Kishor Gurung', total: 38000, status: 'Delivered', date: '2026-08-30', payment: 'Cash On Delivery', courier: 'Local Messenger' },
     { id: 'ORD-8742', customer: 'Sita Sharma', total: 18500, status: 'Delivered', date: '2026-08-18', payment: 'ConnectIPS', courier: 'Nepal Can Move' },
-  ]);
-
-  const [search, setSearch] = useState('');
+  ];
 
   const filtered = orders.filter(
     (o) =>
@@ -84,7 +95,7 @@ export const SuperadminOrdersView: React.FC = () => {
                   </td>
 
                   <td className="p-4 font-black text-emerald-400">
-                    NPR {ord.total.toLocaleString()}
+                    {formatPrice(ord.total)}
                   </td>
 
                   <td className="p-4 text-slate-300">{ord.courier}</td>

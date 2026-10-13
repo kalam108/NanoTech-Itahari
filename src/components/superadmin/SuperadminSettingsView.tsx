@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useRBAC } from '../../../context/RBACContext';
+import { useRBAC } from '../../context/RBACContext';
 import { Sliders, Activity, Shield, Download, CheckCircle2, Lock, Server } from 'lucide-react';
 
 export const SuperadminSettingsView: React.FC = () => {
   const { auditLogs, settings, updateSettings } = useRBAC();
-  const [maintenance, setMaintenance] = useState(settings.maintenanceMode);
-  const [allowReg, setAllowReg] = useState(settings.allowCustomerRegistration);
-  const [sessionTimeout, setSessionTimeout] = useState(settings.sessionTimeoutHours);
+  const [maintenance, setMaintenance] = useState(settings?.maintenanceMode ?? false);
+  const [allowReg, setAllowReg] = useState(settings?.allowCustomerRegistration ?? true);
+  const [sessionTimeout, setSessionTimeout] = useState(settings?.sessionTimeoutHours ?? 24);
   const [saveAlert, setSaveAlert] = useState(false);
 
   const handleSaveSettings = (e: React.FormEvent) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useApp } from '../../../context/AppContext';
+import { useApp } from '../../context/AppContext';
 import { Cpu, Search, Plus, Trash2, Edit2, ShieldAlert, Check, X, ArrowUpRight } from 'lucide-react';
 
 export const SuperadminProductsView: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useRBAC } from '../../../context/RBACContext';
-import { useApp } from '../../../context/AppContext';
+import { useRBAC } from '../../context/RBACContext';
+import { useApp } from '../../context/AppContext';
 import {
   Search,
   Lock,

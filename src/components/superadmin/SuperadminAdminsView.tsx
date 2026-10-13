@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useRBAC } from '../../../context/RBACContext';
-import { Permission, RBACUser } from '../../../types/rbac';
-import { ALL_PERMISSIONS } from '../../../data/rbacSeed';
+import { useRBAC } from '../../context/RBACContext';
+import { Permission, RBACUser } from '../../types/rbac';
+import { ALL_PERMISSIONS } from '../../data/rbacSeed';
 import { UserCheck, Plus, Power, ShieldAlert, Mail, Phone, Lock, Check, X, Shield, AlertTriangle } from 'lucide-react';
 
 export const SuperadminAdminsView: React.FC = () => {

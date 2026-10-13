@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useRBAC } from '../../../context/RBACContext';
+import { useRBAC } from '../../context/RBACContext';
 import {
   Lock,
   LayoutDashboard,

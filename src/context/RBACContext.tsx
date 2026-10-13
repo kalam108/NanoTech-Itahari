@@ -16,10 +16,14 @@ interface RBACContextType {
   admins: RBACUser[];
   addAdmin: (adminData: { name: string; email: string; password: string; phone?: string; department?: string; permissions: Permission[] }) => Promise<{ success: boolean; error?: string }>;
   toggleAdminStatus: (adminId: string) => Promise<void>;
+  updateAdminPermissions: (adminId: string, permissions: Permission[]) => Promise<void>;
+  deleteAdmin?: (adminId: string) => Promise<void>;
   auditLogs: AuditLog[];
   addAuditLog: (action: string, target: string, details: string) => void;
   systemSettings: SystemSettings;
   updateSystemSettings: (settings: Partial<SystemSettings>) => void;
+  settings: SystemSettings;
+  updateSettings: (settings: Partial<SystemSettings>) => void;
   hasPermission: (permission: Permission) => boolean;
   securityNotice: string | null;
   clearSecurityNotice: () => void;
@@ -423,6 +427,50 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     );
   };
 
+  const updateAdminPermissions = async (adminId: string, permissions: Permission[]) => {
+    if (!currentUser || currentUser.role !== 'superadmin') return;
+
+    try {
+      await fetch(`/api/superadmin/admins/${adminId}/permissions`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ permissions }),
+      });
+    } catch {}
+
+    setAdmins((prev) =>
+      prev.map((adm) => {
+        if (adm.id === adminId) {
+          addAuditLog('ADMIN_PERMISSIONS_CHANGED', adm.email, `Updated permissions for ${adm.name}`);
+          return { ...adm, permissions };
+        }
+        return adm;
+      })
+    );
+  };
+
+  const deleteAdmin = async (adminId: string) => {
+    if (!currentUser || currentUser.role !== 'superadmin') return;
+
+    try {
+      await fetch(`/api/superadmin/admins/${adminId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch {}
+
+    setAdmins((prev) => {
+      const target = prev.find((a) => a.id === adminId);
+      if (target) {
+        addAuditLog('ADMIN_DELETED', target.email, `Deleted admin "${target.name}"`);
+      }
+      return prev.filter((adm) => adm.id !== adminId);
+    });
+  };
+
   const updateSystemSettings = (updates: Partial<SystemSettings>) => {
     if (!currentUser || currentUser.role !== 'superadmin') return;
     setSystemSettings((prev) => ({ ...prev, ...updates }));
@@ -451,10 +499,14 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         admins,
         addAdmin,
         toggleAdminStatus,
+        updateAdminPermissions,
+        deleteAdmin,
         auditLogs,
         addAuditLog,
         systemSettings,
         updateSystemSettings,
+        settings: systemSettings,
+        updateSettings: updateSystemSettings,
         hasPermission,
         securityNotice,
         clearSecurityNotice,

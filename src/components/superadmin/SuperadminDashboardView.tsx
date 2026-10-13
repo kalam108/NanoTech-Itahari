@@ -1,5 +1,7 @@
 import React from 'react';
-import { useRBAC } from '../../../context/RBACContext';
+import { useRBAC } from '../../context/RBACContext';
+import { useApp } from '../../context/AppContext';
+import { useAdmin } from '../../context/AdminContext';
 import {
   ShieldCheck,
   UserCheck,
@@ -15,6 +17,12 @@ import {
 
 export const SuperadminDashboardView: React.FC = () => {
   const { navigate, admins, auditLogs } = useRBAC();
+  const { users, products, orders, formatPrice } = useApp();
+  const { totalRevenueAmount } = useAdmin();
+
+  const totalRev = totalRevenueAmount > 0 
+    ? totalRevenueAmount 
+    : orders.reduce((sum, o) => sum + (o.total || 0), 0);
 
   const activeAdmins = admins.filter((a) => a.status === 'active').length;
   const disabledAdmins = admins.filter((a) => a.status === 'disabled').length;
@@ -82,7 +90,7 @@ export const SuperadminDashboardView: React.FC = () => {
               <Users className="w-4 h-4 text-sky-600" />
             </div>
           </div>
-          <div className="mt-2 text-2xl font-black text-slate-900">1,420 Users</div>
+          <div className="mt-2 text-2xl font-black text-slate-900">{users.length} Users</div>
           <div className="mt-1 text-xs text-slate-500">Strictly isolated from /admin</div>
         </div>
 
@@ -93,8 +101,8 @@ export const SuperadminDashboardView: React.FC = () => {
               <Activity className="w-4 h-4 text-emerald-600" />
             </div>
           </div>
-          <div className="mt-2 text-2xl font-black text-emerald-700">NPR 7,015,000</div>
-          <div className="mt-1 text-xs text-slate-500">Lifetime catalog sales</div>
+          <div className="mt-2 text-2xl font-black text-emerald-700">{formatPrice(totalRev)}</div>
+          <div className="mt-1 text-xs text-slate-500">Live catalog & order sales</div>
         </div>
 
         <div className="bg-white/75 backdrop-blur-md border border-slate-200/80 p-5 rounded-2xl shadow-xs hover:border-slate-300 transition">

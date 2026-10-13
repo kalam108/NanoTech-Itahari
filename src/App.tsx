@@ -3,7 +3,7 @@ import { ServerProvider } from './context/ServerContext';
 import { AppProvider, useApp } from './context/AppContext';
 import { AdminProvider } from './context/AdminContext';
 import { RBACProvider } from './context/RBACContext';
-import { AppRouter } from './components/rbac/AppRouter';
+import { AppRouter } from './components/superadmin/AppRouter';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { ToastContainer } from './components/layout/ToastContainer';

@@ -15,12 +15,13 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
     setSelectedRole(role);
     setErrorMessage('');
     if (role === 'superadmin') {
-      setEmail('kalam@nanotech.com');
+      setEmail('kalam88@gmail.com');
       setPassword('Kalam@123');
     } else if (role === 'admin') {
       setEmail('nenotech108@gmail.com');
       setPassword('Admin@12345');
     } else {
+      //Customer sign up after login features
       setEmail('customer@nanotech.com');
       setPassword('Customer@123');
     }
@@ -57,15 +58,15 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
             {selectedRole === 'superadmin'
               ? 'Superadmin Access Control'
               : selectedRole === 'admin'
-              ? 'NanoTech Staff & Admin Portal'
-              : 'Customer Account Login'}
+                ? 'NanoTech Staff & Admin Portal'
+                : 'Customer Account Login'}
           </h2>
           <p className="mt-1 text-sm text-slate-400">
             {selectedRole === 'superadmin'
               ? 'Master administrator console reserved for Kalam.'
               : selectedRole === 'admin'
-              ? 'Sign in to manage catalog, orders, and fulfillment.'
-              : 'Sign in to access your dashboard, orders, and cart.'}
+                ? 'Sign in to manage catalog, orders, and fulfillment.'
+                : 'Sign in to access your dashboard, orders, and cart.'}
           </p>
         </div>
 
@@ -74,11 +75,10 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
           <button
             type="button"
             onClick={() => handleRoleSelect('customer')}
-            className={`py-2 rounded-lg transition flex items-center justify-center gap-1 ${
-              selectedRole === 'customer'
-                ? 'bg-blue-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+            className={`py-2 rounded-lg transition flex items-center justify-center gap-1 ${selectedRole === 'customer'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-slate-200'
+              }`}
           >
             <User className="w-3.5 h-3.5" />
             Customer
@@ -86,11 +86,10 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
           <button
             type="button"
             onClick={() => handleRoleSelect('admin')}
-            className={`py-2 rounded-lg transition flex items-center justify-center gap-1 ${
-              selectedRole === 'admin'
-                ? 'bg-purple-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+            className={`py-2 rounded-lg transition flex items-center justify-center gap-1 ${selectedRole === 'admin'
+              ? 'bg-purple-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-slate-200'
+              }`}
           >
             <Shield className="w-3.5 h-3.5" />
             Admin
@@ -98,11 +97,10 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
           <button
             type="button"
             onClick={() => handleRoleSelect('superadmin')}
-            className={`py-2 rounded-lg transition flex items-center justify-center gap-1 ${
-              selectedRole === 'superadmin'
-                ? 'bg-amber-500 text-slate-950 font-bold shadow-md'
-                : 'text-amber-400 hover:text-amber-300'
-            }`}
+            className={`py-2 rounded-lg transition flex items-center justify-center gap-1 ${selectedRole === 'superadmin'
+              ? 'bg-amber-500 text-slate-950 font-bold shadow-md'
+              : 'text-amber-400 hover:text-amber-300'
+              }`}
           >
             <Lock className="w-3.5 h-3.5" />
             Superadmin
@@ -130,10 +128,10 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
               onChange={(e) => setEmail(e.target.value)}
               placeholder={
                 selectedRole === 'superadmin'
-                  ? 'kalam@nanotech.com'
+                  ? 'kalam88@gmail.com'
                   : selectedRole === 'admin'
-                  ? 'admin@nanotech.com'
-                  : 'customer@nanotech.com'
+                    ? 'nanotech108@gmail.com'
+                    : 'customer@nanotech.com'
               }
               className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm"
             />
@@ -158,13 +156,12 @@ export const UnifiedLoginPage: React.FC<{ initialRole?: Role }> = ({ initialRole
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2 shadow-lg ${
-              selectedRole === 'superadmin'
-                ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
-                : selectedRole === 'admin'
+            className={`w-full py-3 px-4 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2 shadow-lg ${selectedRole === 'superadmin'
+              ? 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+              : selectedRole === 'admin'
                 ? 'bg-purple-600 hover:bg-purple-500 text-white'
                 : 'bg-blue-600 hover:bg-blue-500 text-white'
-            }`}
+              }`}
           >
             {loading ? (
               <span>Authenticating...</span>
