@@ -190,22 +190,10 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
 
-    // 3. CUSTOMER PROTECTED ROUTES
+    // 3. LEGACY CUSTOMER ROUTES REDIRECT TO STOREFRONT
     if (path.startsWith('/customer')) {
-      const publicCustomerRoutes = ['/customer/login', '/customer/signup', '/customer/products'];
-      if (publicCustomerRoutes.includes(path)) {
-        if (currentUser && (path === '/customer/login' || path === '/customer/signup')) {
-          navigate('/customer/dashboard');
-        }
-        return;
-      }
-
-      // Protected customer views (e.g. /customer/dashboard, /customer/cart, /customer/orders, /customer/profile)
-      if (!currentUser) {
-        setSecurityNotice('Please log in or sign up to access your customer dashboard.');
-        navigate('/customer/login');
-        return;
-      }
+      navigate('/');
+      return;
     }
   }, [currentPath, currentUser]);
 
@@ -301,7 +289,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem('nanotech_session_token', data.token);
       localStorage.setItem('nanotech_user', JSON.stringify(data.user));
 
-      navigate('/customer/dashboard');
+      navigate('/');
       return { success: true };
     } catch (err) {
       // Local fallback
@@ -317,7 +305,7 @@ export const RBACProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       };
       setCurrentUser(newUser);
       setToken(`fallback_${newUser.id}`);
-      navigate('/customer/dashboard');
+      navigate('/');
       return { success: true };
     }
   };

@@ -61,7 +61,7 @@ export const SuperadminSettingsView: React.FC = () => {
             <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 flex items-center justify-between">
               <div>
                 <div className="text-xs font-bold text-white">Public Customer Registration</div>
-                <div className="text-[11px] text-slate-400">Permit new shoppers to register via /customer/signup</div>
+                <div className="text-[11px] text-slate-400">Permit new shoppers to register on Storefront</div>
               </div>
               <input
                 type="checkbox"

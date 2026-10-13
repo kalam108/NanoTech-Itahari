@@ -291,8 +291,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         !clean.startsWith('/admin') &&
         !clean.startsWith('/adminpanel') &&
         !clean.startsWith('/superadmin') &&
-        !clean.startsWith('/kalam-infos') &&
-        !clean.startsWith('/customer')
+        !clean.startsWith('/kalam-infos')
       ) {
         const parsed = getViewFromPath(clean);
         setCurrentViewState(parsed.view);
