@@ -212,22 +212,24 @@ const DEFAULT_FILTERS: FilterState = {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+function safeStorageGet<T>(key: string, fallback: T): T {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const saved = localStorage.getItem(key);
+    if (!saved || saved === 'undefined' || saved === 'null') return fallback;
+    return JSON.parse(saved) as T;
+  } catch {
+    return fallback;
+  }
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
-  // Initialize state from LocalStorage if available
-  const [users, setUsers] = useState<User[]>(() => {
-    const saved = localStorage.getItem('nanotech_users');
-    return saved ? JSON.parse(saved) : INITIAL_USERS;
-  });
-
-  const [sellers, setSellers] = useState<SellerProfile[]>(() => {
-    const saved = localStorage.getItem('nanotech_sellers');
-    return saved ? JSON.parse(saved) : INITIAL_SELLERS;
-  });
-
-  const [currentUser, setCurrentUser] = useState<User>(() => {
-    const saved = localStorage.getItem('nanotech_current_user');
-    return saved ? JSON.parse(saved) : INITIAL_USERS[3]; // Alex Rivera (Customer)
-  });
+  // Initialize state from LocalStorage safely
+  const [users, setUsers] = useState<User[]>(() => safeStorageGet('nanotech_users', INITIAL_USERS));
+  const [sellers, setSellers] = useState<SellerProfile[]>(() => safeStorageGet('nanotech_sellers', INITIAL_SELLERS));
+  const [currentUser, setCurrentUser] = useState<User>(() =>
+    safeStorageGet('nanotech_current_user', INITIAL_USERS[3])
+  );
 
   const { currentPath, navigate: rbacNavigate } = useRBAC();
 
@@ -332,37 +334,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
 
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('nanotech_cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [cart, setCart] = useState<CartItem[]>(() => safeStorageGet('nanotech_cart', []));
 
-  const [wishlist, setWishlist] = useState<string[]>(() => {
-    const saved = localStorage.getItem('nanotech_wishlist');
-    return saved ? JSON.parse(saved) : ['prod-1', 'prod-3'];
-  });
+  const [wishlist, setWishlist] = useState<string[]>(() =>
+    safeStorageGet('nanotech_wishlist', ['prod-1', 'prod-3'])
+  );
 
-  const [compareList, setCompareList] = useState<string[]>(() => {
-    const saved = localStorage.getItem('nanotech_compare');
-    return saved ? JSON.parse(saved) : ['prod-2'];
-  });
+  const [compareList, setCompareList] = useState<string[]>(() =>
+    safeStorageGet('nanotech_compare', ['prod-2'])
+  );
 
-  const [orders, setOrders] = useState<Order[]>(() => {
-    const saved = localStorage.getItem('nanotech_orders');
-    return saved ? JSON.parse(saved) : INITIAL_ORDERS;
-  });
+  const [orders, setOrders] = useState<Order[]>(() => safeStorageGet('nanotech_orders', INITIAL_ORDERS));
 
-  const [conversations, setConversations] = useState<Conversation[]>(() => {
-    const saved = localStorage.getItem('nanotech_conversations');
-    return saved ? JSON.parse(saved) : INITIAL_CONVERSATIONS;
-  });
+  const [conversations, setConversations] = useState<Conversation[]>(() =>
+    safeStorageGet('nanotech_conversations', INITIAL_CONVERSATIONS)
+  );
 
   const [activeConversationId, setActiveConversationId] = useState<string | null>('conv-1');
 
   const [messages, setMessages] = useState<Record<string, Message[]>>(() => {
-    const saved = localStorage.getItem('nanotech_messages');
-    if (saved) return JSON.parse(saved);
-    return {
+    return safeStorageGet('nanotech_messages', {
       'conv-1': [
         {
           id: 'msg-1',
@@ -383,23 +374,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
           isRead: true,
         },
       ],
-    };
+    });
   });
 
-  const [reviews, setReviews] = useState<Review[]>(() => {
-    const saved = localStorage.getItem('nanotech_reviews');
-    return saved ? JSON.parse(saved) : INITIAL_REVIEWS;
-  });
+  const [reviews, setReviews] = useState<Review[]>(() => safeStorageGet('nanotech_reviews', INITIAL_REVIEWS));
 
-  const [reports, setReports] = useState<Report[]>(() => {
-    const saved = localStorage.getItem('nanotech_reports');
-    return saved ? JSON.parse(saved) : INITIAL_REPORTS;
-  });
+  const [reports, setReports] = useState<Report[]>(() => safeStorageGet('nanotech_reports', INITIAL_REPORTS));
 
-  const [promotions, setPromotions] = useState<Promotion[]>(() => {
-    const saved = localStorage.getItem('nanotech_promotions');
-    return saved ? JSON.parse(saved) : INITIAL_PROMOTIONS;
-  });
+  const [promotions, setPromotions] = useState<Promotion[]>(() =>
+    safeStorageGet('nanotech_promotions', INITIAL_PROMOTIONS)
+  );
 
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
